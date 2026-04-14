@@ -1146,7 +1146,7 @@
     object-fit: cover;
     object-position: center top;
     display: block;
-    mix-blend-mode: multiply;
+    mix-blend-mode: lighten;
   }
   .prabh-video-wrap::after {
     content: '';
@@ -1200,7 +1200,6 @@
     max-width: 480px;
     height: auto;
     display: block;
-    mix-blend-mode: multiply;
     filter: brightness(1.15) contrast(1.05) drop-shadow(0 20px 60px rgba(212,168,67,.3));
   }
   .journey-img-glow {
@@ -1489,7 +1488,10 @@
   </div>
   <div class="hero-right">
     <div class="hero-glow"></div>
-    <video id="heroVid" autoplay muted playsinline>
+    <video id="heroVidA" autoplay muted playsinline>
+      <source src="background_video.mp4" type="video/mp4" />
+    </video>
+    <video id="heroVidB" muted playsinline style="opacity:0">
       <source src="background_video.mp4" type="video/mp4" />
     </video>
   </div>
@@ -2293,31 +2295,89 @@
 
 <script>
   // ═══════════════════════════════════════
-  // HERO VIDEO — ping-pong last 0.8s
+  // HERO VIDEO — Live Photo "Loop" crossfade
+  // Last 0.9s: fades into clone starting from 0
   // ═══════════════════════════════════════
-  const heroVid = document.getElementById('heroVid');
-  let reversing = false;
-  let prevTs = null;
+  const vidA = document.getElementById('heroVidA');
+  const vidB = document.getElementById('heroVidB');
+  const XFADE = 0.9; // crossfade window (seconds)
+  let xfading = false;
+  let xfadeStart = null;  // performance.now() when crossfade began
+  let xfadeDuration = 0;  // ms — set when we know actual video duration
 
-  heroVid.addEventListener('ended', () => {
-    reversing = true;
-    prevTs = null;
-    requestAnimationFrame(reverseFrame);
+  // Both videos share the same source; B starts hidden
+  vidA.style.opacity = '1';
+  vidB.style.opacity = '0';
+
+  vidA.addEventListener('loadedmetadata', () => {
+    xfadeDuration = XFADE * 1000;
   });
 
-  function reverseFrame(ts) {
-    if (!reversing) return;
-    if (prevTs === null) prevTs = ts;
-    const dt = Math.min((ts - prevTs) / 1000, 0.05);
-    prevTs = ts;
-    const next = heroVid.currentTime - dt;
-    if (next <= heroVid.duration - 0.8) {
-      heroVid.currentTime = heroVid.duration - 0.8;
-      reversing = false;
-      heroVid.play();
+  vidA.addEventListener('timeupdate', () => {
+    if (xfading || !vidA.duration) return;
+    const remaining = vidA.duration - vidA.currentTime;
+    if (remaining <= XFADE) {
+      // Kick off B from the very beginning and crossfade
+      xfading = true;
+      vidB.currentTime = 0;
+      vidB.play();
+      xfadeStart = performance.now();
+      requestAnimationFrame(doXfade);
+    }
+  });
+
+  function doXfade(now) {
+    const elapsed = now - xfadeStart;
+    const t = Math.min(elapsed / (xfadeDuration || XFADE * 1000), 1);
+    // smooth ease-in-out
+    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+    vidA.style.opacity = String(1 - ease);
+    vidB.style.opacity = String(ease);
+
+    if (t < 1) {
+      requestAnimationFrame(doXfade);
     } else {
-      heroVid.currentTime = next;
-      requestAnimationFrame(reverseFrame);
+      // Swap roles: B becomes the new A
+      vidA.pause();
+      vidA.style.opacity = '0';
+      vidB.style.opacity = '1';
+
+      // Re-register the same logic on B → A
+      vidB.addEventListener('timeupdate', onBTimeupdate);
+      xfading = false;
+    }
+  }
+
+  function onBTimeupdate() {
+    if (xfading || !vidB.duration) return;
+    const remaining = vidB.duration - vidB.currentTime;
+    if (remaining <= XFADE) {
+      xfading = true;
+      vidA.currentTime = 0;
+      vidA.play();
+      xfadeStart = performance.now();
+      requestAnimationFrame(doXfade2);
+    }
+  }
+
+  function doXfade2(now) {
+    const elapsed = now - xfadeStart;
+    const t = Math.min(elapsed / (xfadeDuration || XFADE * 1000), 1);
+    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+    vidB.style.opacity = String(1 - ease);
+    vidA.style.opacity = String(ease);
+
+    if (t < 1) {
+      requestAnimationFrame(doXfade2);
+    } else {
+      vidB.pause();
+      vidB.removeEventListener('timeupdate', onBTimeupdate);
+      vidB.style.opacity = '0';
+      vidA.style.opacity = '1';
+      xfading = false;
+      // A is now playing again from the start, original listener resumes
     }
   }
 
@@ -2413,7 +2473,8 @@
   // ═══════════════════════════════════════
   // ISKCON CENTRES — live RSS fetch
   // ═══════════════════════════════════════
-  const PROXY = 'https://api.allorigins.win/get?url=';
+  // codetabs proxy returns raw content directly (res.text()), no JSON wrapper
+  const PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
   const FEED_BASE = 'https://centres.iskcon.org/?feed=job_feed&search_location=&job_categories=&search_keywords=&paged=';
 
   let allCentres = [];
@@ -2444,8 +2505,9 @@
       try {
         const feedUrl = encodeURIComponent(FEED_BASE + page);
         const res = await fetch(PROXY + feedUrl);
-        const json = await res.json();
-        const items = parseRssPage(json.contents || '');
+        if (!res.ok) break;
+        const xml = await res.text();
+        const items = parseRssPage(xml);
         if (!items.length) break;
         allCentres.push(...items);
         page++;
