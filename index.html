@@ -1488,10 +1488,7 @@
   </div>
   <div class="hero-right">
     <div class="hero-glow"></div>
-    <video id="heroVidA" autoplay muted playsinline>
-      <source src="background_video.mp4" type="video/mp4" />
-    </video>
-    <video id="heroVidB" muted playsinline style="opacity:0">
+    <video id="heroVid" autoplay muted playsinline>
       <source src="background_video.mp4" type="video/mp4" />
     </video>
   </div>
@@ -2295,72 +2292,20 @@
 
 <script>
   // ═══════════════════════════════════════
-  // HERO VIDEO — Live Photo "Loop"
-  // Full video plays once → then only last
-  // LOOP_SEC seconds loop with crossfade
+  // HERO VIDEO — plays once, freezes on last
+  // frame; hover → replays from start
   // ═══════════════════════════════════════
-  const vidA = document.getElementById('heroVidA');
-  const vidB = document.getElementById('heroVidB');
+  const heroVid = document.getElementById('heroVid');
+  const heroRight = heroVid.closest('.hero-right');
 
-  const LOOP_SEC  = 0.95;  // duration of the looping tail (seconds)
-  const XFADE_SEC = 0.55; // crossfade overlap (seconds, < LOOP_SEC)
-  const XFADE_MS  = XFADE_SEC * 1000;
-
-  let loopStart = 0;   // = duration - LOOP_SEC, set after metadata
-  let xfading   = false;
-
-  vidA.style.opacity = '1';
-  vidB.style.opacity = '0';
-
-  vidA.addEventListener('loadedmetadata', () => {
-    loopStart = Math.max(0, vidA.duration - LOOP_SEC);
+  heroVid.addEventListener('ended', () => {
+    // stay on last frame — video is already paused at end
   });
 
-  // ── generic crossfade: fade `from` → `to`, then register loop on `to`
-  function crossfade(from, to) {
-    if (xfading) return;
-    xfading = true;
-
-    // `to` starts from the loop segment at half speed
-    to.playbackRate = 0.5;
-    to.currentTime = loopStart;
-    to.play();
-
-    const t0 = performance.now();
-
-    function tick(now) {
-      const t    = Math.min((now - t0) / XFADE_MS, 1);
-      const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
-      from.style.opacity = String(1 - ease);
-      to.style.opacity   = String(ease);
-
-      if (t < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        from.pause();
-        from.style.opacity = '0';
-        to.style.opacity   = '1';
-        xfading = false;
-        watchLoop(to, from); // register the next cycle
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
-  // ── watch `active` video; when it reaches XFADE_SEC before end → crossfade
-  function watchLoop(active, standby) {
-    function handler() {
-      if (xfading || !active.duration) return;
-      if (active.currentTime >= active.duration - XFADE_SEC) {
-        active.removeEventListener('timeupdate', handler);
-        crossfade(active, standby);
-      }
-    }
-    active.addEventListener('timeupdate', handler);
-  }
-
-  // ── first play: vidA runs the full video, then triggers the loop
-  watchLoop(vidA, vidB);
+  heroRight.addEventListener('mouseenter', () => {
+    heroVid.currentTime = 0;
+    heroVid.play();
+  });
 
   // ═══════════════════════════════════════
   // NAV SCROLL
