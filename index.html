@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Бхагавад-гита как она есть</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:        #D4A843;
+    --gold-light:  #F0C96A;
+    --gold-bright: #FFD96A;
+    --gold-deep:   #A0731C;
+    --amber:       #E8922A;
+    --ember:       #C8541A;
+    --cream:       #FFF4DC;
+    --cream-dim:   #E8D5A3;
+    --bg:          #050301;
+    --bg2:         #0C0804;
+    --bg3:         #120D05;
+    --ink:         #1A1106;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    opacity: .028;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 2px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    transition: background .4s, backdrop-filter .4s;
+  }
+  nav.scrolled {
+    background: rgba(5,3,1,.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212,168,67,.12);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cream); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: .95rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    padding: 10px 28px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: .9rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .3s, color .3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--bg); }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 56px 80px 60px;
+    background: linear-gradient(105deg, var(--bg) 60%, transparent 100%);
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: .78rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp .8s .3s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 36px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 4.5vw, 5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    color: var(--cream);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp .9s .5s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    color: var(--gold-deep);
+    letter-spacing: .06em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp .9s .7s forwards;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--cream-dim);
+    max-width: 42ch;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp .9s .9s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp .9s 1.1s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--amber), var(--gold));
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .3s;
+    box-shadow: 0 8px 40px rgba(212,168,67,.3);
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 50px rgba(212,168,67,.45); }
+  .btn-primary:hover::after { opacity: 1; }
+  .btn-primary:active { transform: translateY(0) scale(.98); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    border: 1px solid rgba(212,168,67,.4);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color .3s, background .3s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); background: rgba(212,168,67,.06); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px; left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: .75rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(212,168,67,.5);
+    opacity: 0;
+    animation: fadeUp .9s 1.5s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 56px;
+    background: linear-gradient(to bottom, rgba(212,168,67,.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ─── HERO VIDEO ─── */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, var(--bg) 0%, rgba(5,3,1,.2) 30%, transparent 60%),
+      linear-gradient(to top, rgba(5,3,1,.7) 0%, transparent 50%);
+  }
+
+  /* Gold radial glow behind video */
+  .hero-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; height: 80%;
+    background: radial-gradient(ellipse, rgba(212,168,67,.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ─── SECTION BASE ─── */
+  section { position: relative; overflow: hidden; }
+
+  .section-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 120px 60px;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: .75rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  .section-lead {
+    font-size: 1.15rem;
+    color: var(--cream-dim);
+    max-width: 68ch;
+    line-height: 1.8;
+  }
+
+  /* gold divider */
+  .gold-rule {
+    width: 80px; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--amber), transparent);
+    margin: 32px 0;
+  }
+
+  /* ─── SECTION 2: О КНИГЕ ─── */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 64px;
+  }
+  .about-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .mandala-wrap {
+    position: relative;
+    width: 380px; height: 380px;
+  }
+  .mandala-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: spinRing linear infinite;
+  }
+  .mandala-ring:nth-child(1) {
+    border-color: rgba(212,168,67,.5);
+    animation-duration: 30s;
+    animation-direction: normal;
+  }
+  .mandala-ring:nth-child(2) {
+    inset: 30px;
+    border-color: rgba(212,168,67,.3);
+    animation-duration: 22s;
+    animation-direction: reverse;
+  }
+  .mandala-ring:nth-child(3) {
+    inset: 60px;
+    border-color: rgba(212,168,67,.2);
+    animation-duration: 18s;
+    animation-direction: normal;
+    border-style: dashed;
+  }
+  .mandala-core {
+    position: absolute;
+    inset: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,.12) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+  }
+  .mandala-core svg { width: 120px; height: 120px; opacity: .7; }
+
+  .about-text { }
+  .about-features {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .about-feature {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 24px;
+    border: 1px solid rgba(212,168,67,.1);
+    background: rgba(212,168,67,.03);
+    transition: border-color .3s, background .3s;
+  }
+  .about-feature:hover {
+    border-color: rgba(212,168,67,.25);
+    background: rgba(212,168,67,.06);
+  }
+  .feature-icon {
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    border: 1px solid rgba(212,168,67,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+  .feature-body h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+  .feature-body p { font-size: .95rem; color: var(--cream-dim); line-height: 1.6; }
+
+  /* ─── SECTION 3: ПРАБХУПАДА ─── */
+  #prabhupada { background: var(--bg3); }
+  .prabh-layout {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .prabh-quote-block {
+    position: relative;
+    padding: 56px 64px;
+    border: 1px solid rgba(212,168,67,.2);
+    background: linear-gradient(135deg, rgba(212,168,67,.05) 0%, transparent 100%);
+  }
+  .prabh-quote-block::before {
+    content: '\201C';
+    position: absolute;
+    top: -20px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 10rem;
+    line-height: 1;
+    color: var(--gold);
+    opacity: .15;
+    pointer-events: none;
+  }
+  .prabh-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.65;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .prabh-attr {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--gold);
+    font-size: .9rem;
+    letter-spacing: .1em;
+  }
+  .prabh-attr::before { content: '—'; }
+
+  .prabh-facts { display: flex; flex-direction: column; gap: 20px; }
+  .prabh-fact {
+    padding: 24px 28px;
+    border-left: 2px solid var(--gold-deep);
+    background: rgba(212,168,67,.03);
+  }
+  .prabh-fact .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .prabh-fact .label {
+    font-size: .9rem;
+    letter-spacing: .08em;
+    color: var(--cream-dim);
+  }
+
+  /* ─── SECTION 4: ВЕЛИКИЕ УМЫ ─── */
+  #wisdom { background: var(--bg2); }
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 64px;
+  }
+  .quote-card {
+    padding: 36px 32px;
+    border: 1px solid rgba(212,168,67,.12);
+    background: rgba(212,168,67,.025);
+    position: relative;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+    cursor: default;
+  }
+  .quote-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212,168,67,.3);
+    box-shadow: 0 20px 60px rgba(212,168,67,.08);
+  }
+  .quote-card .qmark {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    opacity: .25;
+    line-height: .8;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .quote-card blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.72;
+    color: var(--cream-dim);
+    margin-bottom: 24px;
+  }
+  .quote-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid rgba(212,168,67,.12);
+    padding-top: 20px;
+  }
+  .author-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-deep), var(--amber));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .author-info .name {
+    font-family: 'Playfair Display', serif;
+    font-size: .95rem;
+    color: var(--gold-light);
+    display: block;
+  }
+  .author-info .role { font-size: .78rem; color: rgba(212,168,67,.5); }
+
+  /* Featured large quote */
+  .quote-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(212,168,67,.07) 0%, rgba(232,146,42,.03) 100%);
+    border-color: rgba(212,168,67,.2);
+  }
+  .quote-card.featured blockquote { font-size: 1.15rem; }
+
+  /* ─── SECTION 5: ВЕЧНАЯ АКТУАЛЬНОСТЬ ─── */
+  #relevance { background: var(--bg3); }
+  .relevance-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    counter-reset: topic;
+  }
+  .topic-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(212,168,67,.1);
+    counter-increment: topic;
+    transition: padding-left .3s;
+    cursor: default;
+  }
+  .topic-item:hover { padding-left: 8px; }
+  .topic-num {
+    font-family: 'Playfair Display', serif;
+    font-size: .75rem;
+    color: var(--gold-deep);
+    letter-spacing: .15em;
+    flex-shrink: 0;
+    padding-top: 5px;
+  }
+  .topic-num::before { content: '0' counter(topic); }
+  .topic-content h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .topic-content p { font-size: .93rem; color: var(--cream-dim); line-height: 1.65; }
+
+  .relevance-visual {
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gita-lotus {
+    position: relative;
+    width: 320px; height: 320px;
+  }
+  .lotus-petal {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 110px; height: 190px;
+    background: linear-gradient(to bottom, rgba(212,168,67,.18), transparent);
+    border: 1px solid rgba(212,168,67,.2);
+    border-radius: 50% 50% 0 0;
+    transform-origin: 50% 100%;
+    animation: petalPulse 4s ease-in-out infinite;
+  }
+  .lotus-petal:nth-child(1)  { transform: translate(-50%, -100%) rotate(0deg);   animation-delay: 0s; }
+  .lotus-petal:nth-child(2)  { transform: translate(-50%, -100%) rotate(45deg);  animation-delay: .5s; }
+  .lotus-petal:nth-child(3)  { transform: translate(-50%, -100%) rotate(90deg);  animation-delay: 1s; }
+  .lotus-petal:nth-child(4)  { transform: translate(-50%, -100%) rotate(135deg); animation-delay: 1.5s; }
+  .lotus-petal:nth-child(5)  { transform: translate(-50%, -100%) rotate(180deg); animation-delay: 2s; }
+  .lotus-petal:nth-child(6)  { transform: translate(-50%, -100%) rotate(225deg); animation-delay: 2.5s; }
+  .lotus-petal:nth-child(7)  { transform: translate(-50%, -100%) rotate(270deg); animation-delay: 3s; }
+  .lotus-petal:nth-child(8)  { transform: translate(-50%, -100%) rotate(315deg); animation-delay: 3.5s; }
+  .lotus-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,.35), rgba(212,168,67,.05));
+    border: 1px solid rgba(212,168,67,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .om-symbol {
+    font-size: 2.2rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212,168,67,.6);
+  }
+  .float-label {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: .85rem;
+    color: var(--gold);
+    opacity: .7;
+    letter-spacing: .06em;
+    text-align: center;
+    pointer-events: none;
+  }
+  .float-label:nth-of-type(1) { top: 0; left: 50%; transform: translateX(-50%); animation: floatLabel 6s ease-in-out infinite; }
+  .float-label:nth-of-type(2) { top: 30%; right: -20px; animation: floatLabel 6s 1.5s ease-in-out infinite; }
+  .float-label:nth-of-type(3) { bottom: 10%; left: 50%; transform: translateX(-50%); animation: floatLabel 6s 3s ease-in-out infinite; }
+  .float-label:nth-of-type(4) { top: 30%; left: -20px; animation: floatLabel 6s 4.5s ease-in-out infinite; }
+
+  /* ─── SECTION 6: ЧТО ВНУТРИ ─── */
+  #contents { background: var(--bg2); }
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+    background: rgba(212,168,67,.08);
+    border: 1px solid rgba(212,168,67,.08);
+  }
+  .chapter-card {
+    background: var(--bg2);
+    padding: 36px 32px;
+    transition: background .3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(to right, var(--gold), var(--amber));
+    transition: width .4s;
+  }
+  .chapter-card:hover { background: rgba(212,168,67,.04); }
+  .chapter-card:hover::before { width: 100%; }
+  .chapter-num {
+    font-family: 'Playfair Display', serif;
+    font-size: .75rem;
+    letter-spacing: .2em;
+    color: var(--gold-deep);
+    margin-bottom: 12px;
+  }
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .chapter-desc { font-size: .88rem; color: var(--cream-dim); line-height: 1.65; }
+
+  /* ─── SECTION 7: КАК ПОЛУЧИТЬ ─── */
+  #acquire { background: var(--bg3); }
+  .acquire-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .book-display {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+  }
+  .book-3d {
+    position: relative;
+    width: 220px; height: 300px;
+    transform-style: preserve-3d;
+    transform: rotateY(-18deg) rotateX(3deg);
+    filter: drop-shadow(0 40px 80px rgba(212,168,67,.25));
+    animation: bookFloat 6s ease-in-out infinite;
+  }
+  .book-cover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #2a1a05 0%, #1a0e03 40%, #0d0701 100%);
+    border: 1px solid rgba(212,168,67,.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .book-cover::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(212,168,67,.15);
+    pointer-events: none;
+  }
+  .book-cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    line-height: 1.3;
+    text-align: center;
+  }
+  .book-cover-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: .75rem;
+    color: var(--cream-dim);
+    letter-spacing: .08em;
+  }
+  .book-spine {
+    position: absolute;
+    top: 0; left: -18px;
+    width: 18px; height: 100%;
+    background: linear-gradient(to right, #150b02, #2a1a05);
+    border-left: 1px solid rgba(212,168,67,.2);
+    transform-origin: right center;
+    transform: rotateY(-90deg) translateX(-9px);
+  }
+  .book-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px; height: 400px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .acquire-options { display: flex; flex-direction: column; gap: 20px; }
+  .acquire-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 28px;
+    border: 1px solid rgba(212,168,67,.12);
+    background: rgba(212,168,67,.025);
+    transition: border-color .3s, background .3s, transform .2s;
+    cursor: default;
+  }
+  .acquire-option:hover {
+    border-color: rgba(212,168,67,.3);
+    background: rgba(212,168,67,.06);
+    transform: translateX(4px);
+  }
+  .option-icon {
+    width: 48px; height: 48px;
+    border: 1px solid rgba(212,168,67,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .option-body h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+  .option-body p { font-size: .9rem; color: var(--cream-dim); }
+  .option-body a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: .88rem;
+    letter-spacing: .05em;
+    transition: color .2s;
+  }
+  .option-body a:hover { color: var(--gold-bright); }
+
+  /* ─── SECTION 8: TESTIMONIALS ─── */
+  #testimonials { background: var(--bg2); }
+  .testimonials-scroll {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .testi-card {
+    padding: 28px 24px;
+    border: 1px solid rgba(212,168,67,.1);
+    background: rgba(212,168,67,.02);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border-color .3s;
+  }
+  .testi-card:hover { border-color: rgba(212,168,67,.25); }
+  .testi-stars { display: flex; gap: 4px; }
+  .star { color: var(--gold); font-size: .9rem; }
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: .98rem;
+    line-height: 1.7;
+    color: var(--cream-dim);
+    flex: 1;
+  }
+  .testi-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(212,168,67,.1); padding-top: 16px; }
+  .testi-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-deep), var(--ember));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+  .testi-name { font-family: 'Playfair Display', serif; font-size: .88rem; color: var(--gold-light); display: block; }
+  .testi-loc { font-size: .76rem; color: rgba(212,168,67,.45); }
+
+  /* ─── SECTION 9: FAQ ─── */
+  #faq { background: var(--bg3); }
+  .faq-layout {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 100px;
+    margin-top: 60px;
+  }
+  .faq-intro p { font-size: 1.05rem; color: var(--cream-dim); line-height: 1.8; margin-top: 24px; }
+
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-item {
+    border-bottom: 1px solid rgba(212,168,67,.12);
+    overflow: hidden;
+  }
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 0;
+    cursor: pointer;
+    text-align: left;
+    color: var(--cream);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    transition: color .3s;
+  }
+  .faq-question:hover { color: var(--gold-light); }
+  .faq-question.open { color: var(--gold-light); }
+  .faq-icon {
+    width: 28px; height: 28px;
+    border: 1px solid rgba(212,168,67,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 1.2rem;
+    font-weight: 300;
+    transition: transform .3s, background .3s;
+  }
+  .faq-question.open .faq-icon {
+    transform: rotate(45deg);
+    background: rgba(212,168,67,.1);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .faq-answer.open { max-height: 400px; }
+  .faq-answer-inner {
+    padding: 0 0 24px 0;
+    font-size: .98rem;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+
+  /* ─── SECTION 10: CTA ─── */
+  #cta {
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 600px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 160px 60px;
+    text-align: center;
+  }
+  .cta-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: .75rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+  .cta-eyebrow::before, .cta-eyebrow::after {
+    content: '';
+    display: block;
+    width: 48px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .cta-eyebrow::after { background: linear-gradient(to left, transparent, var(--gold)); }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .cta-desc {
+    font-size: 1.15rem;
+    color: var(--cream-dim);
+    line-height: 1.75;
+    max-width: 56ch;
+    margin: 0 auto 56px;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 56px;
+    background: linear-gradient(135deg, var(--amber), var(--gold), var(--gold-light));
+    background-size: 200% 200%;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 10px 50px rgba(212,168,67,.35);
+    transition: transform .2s, box-shadow .3s, background-position .4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 70px rgba(212,168,67,.5);
+    background-position: 100% 100%;
+  }
+  .btn-cta:active { transform: translateY(-1px) scale(.98); }
+  .cta-note { margin-top: 28px; font-size: .85rem; color: rgba(212,168,67,.4); letter-spacing: .06em; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(212,168,67,.1);
+    padding: 60px 60px 40px;
+  }
+  .footer-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-brand .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    letter-spacing: .12em;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .footer-brand p { font-size: .88rem; color: rgba(212,168,67,.45); line-height: 1.7; }
+  .footer-col h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: .8rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a {
+    font-size: .88rem;
+    color: rgba(212,168,67,.45);
+    text-decoration: none;
+    transition: color .3s;
+  }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-bottom {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-top: 32px;
+    border-top: 1px solid rgba(212,168,67,.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p { font-size: .78rem; color: rgba(212,168,67,.3); letter-spacing: .05em; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spinRing {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: .5; }
+    50%       { opacity: 1; }
+  }
+  @keyframes petalPulse {
+    0%, 100% { opacity: .7; }
+    50%       { opacity: .3; }
+  }
+  @keyframes floatLabel {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(-8px); }
+  }
+  @keyframes bookFloat {
+    0%, 100% { transform: rotateY(-18deg) rotateX(3deg) translateY(0); }
+    50%       { transform: rotateY(-18deg) rotateX(3deg) translateY(-12px); }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+  .reveal-delay-4 { transition-delay: .4s; }
+  .reveal-delay-5 { transition-delay: .5s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .quotes-grid { grid-template-columns: 1fr 1fr; }
+    .quote-card.featured { grid-column: span 2; grid-template-columns: 1fr; }
+    .testimonials-scroll { grid-template-columns: repeat(2, 1fr); }
+    .chapters-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 860px) {
+    nav { padding: 16px 28px; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; min-height: 100dvh; }
+    .hero-left { padding: 100px 28px 60px; }
+    .hero-right { position: absolute; inset: 0; z-index: -1; }
+    .hero-left { background: linear-gradient(to bottom, rgba(5,3,1,.85) 0%, rgba(5,3,1,.7) 100%); }
+    .section-inner { padding: 80px 28px; }
+    .about-grid, .prabh-layout, .relevance-layout, .acquire-wrapper, .faq-layout { grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { display: none; }
+    .quotes-grid { grid-template-columns: 1fr; }
+    .quote-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .testimonials-scroll { grid-template-columns: 1fr; }
+    .chapters-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    footer { padding: 48px 28px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">Бхагавад&#8209;<span>гита</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">О книге</a></li>
+    <li><a href="#prabhupada">Прабхупада</a></li>
+    <li><a href="#wisdom">Великие умы</a></li>
+    <li><a href="#contents">Содержание</a></li>
+    <li><a href="#faq">Вопросы</a></li>
+  </ul>
+  <a class="nav-cta" href="#acquire">Получить книгу</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+  1. HERO
+══════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Древняя мудрость &mdash; Вечная истина</div>
+    <h1 class="hero-title">
+      Бхагавад&#8209;гита
+      <em>как она есть</em>
+    </h1>
+    <p class="hero-subtitle">700 стихов, изменивших миллионы жизней</p>
+    <div class="gold-rule"></div>
+    <p class="hero-desc">
+      Священный диалог Кришны и Арджуны на поле битвы Курукшетра.
+      Самое читаемое священное писание мира — в точном переводе
+      и с глубочайшими комментариями Шрилы Прабхупады.
+    </p>
+    <div class="hero-actions">
+      <a href="#acquire" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Получить книгу
+      </a>
+      <a href="#about" class="btn-secondary">Узнать больше</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Листайте вниз
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-glow"></div>
+    <video autoplay muted loop playsinline>
+      <source src="background_video.mp4" type="video/mp4" />
+    </video>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  2. О КНИГЕ
+══════════════════════════════════════════════ -->
+<section id="about">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Что это за книга</div>
+      <h2 class="section-title">Песнь <em>Господа</em></h2>
+      <p class="section-lead">
+        Пять тысяч лет назад на поле Курукшетра Верховный Господь Кришна поведал воину Арджуне
+        абсолютную истину о природе жизни, смерти, долга и освобождения.
+        Эти беседы стали Бхагавад-гитой — «Песней Господа».
+      </p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-visual reveal reveal-delay-2">
+        <div class="mandala-wrap">
+          <div class="mandala-ring"></div>
+          <div class="mandala-ring"></div>
+          <div class="mandala-ring"></div>
+          <div class="mandala-core">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" stroke="#D4A843" stroke-width=".6" opacity=".4"/>
+              <circle cx="50" cy="50" r="30" stroke="#D4A843" stroke-width=".6" opacity=".3"/>
+              <!-- simplified chakra -->
+              <path d="M50 8 L55 38 L50 50 L45 38 Z" fill="rgba(212,168,67,.25)" stroke="#D4A843" stroke-width=".5"/>
+              <path d="M50 92 L45 62 L50 50 L55 62 Z" fill="rgba(212,168,67,.25)" stroke="#D4A843" stroke-width=".5"/>
+              <path d="M8 50 L38 45 L50 50 L38 55 Z" fill="rgba(212,168,67,.25)" stroke="#D4A843" stroke-width=".5"/>
+              <path d="M92 50 L62 55 L50 50 L62 45 Z" fill="rgba(212,168,67,.25)" stroke="#D4A843" stroke-width=".5"/>
+              <circle cx="50" cy="50" r="8" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-text reveal reveal-delay-3">
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="feature-body">
+              <h4>18 глав, 700 стихов</h4>
+              <p>Охватывают все сферы духовного знания — от природы души и реинкарнации до высшей цели человеческой жизни.</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="feature-body">
+              <h4>5000 лет актуальности</h4>
+              <p>Написана за тысячелетия до нашей эры, Гита остаётся самым цитируемым и изучаемым текстом на планете.</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="feature-body">
+              <h4>Неизменённый оригинал</h4>
+              <p>Издание «как она есть» сохраняет подлинный смысл — без домыслов и искажений личной философией переводчика.</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="feature-body">
+              <h4>Более 500 млн экземпляров</h4>
+              <p>Переведена на 90+ языков мира. Одна из самых распространённых книг в истории человечества.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  3. ШРИЛА ПРАБХУПАДА
+══════════════════════════════════════════════ -->
+<section id="prabhupada">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Автор перевода и комментариев</div>
+      <h2 class="section-title">Шрила <em>Прабхупада</em></h2>
+      <p class="section-lead">
+        А. Ч. Бхактиведанта Свами Прабхупада — ачарья-основатель Международного общества сознания Кришны.
+        Его комментарии — не личные домыслы, а непрерывная цепь знания,
+        уходящая своими корнями к Самому Господу Кришне.
+      </p>
+    </div>
+
+    <div class="prabh-layout">
+      <div class="reveal reveal-delay-2">
+        <div class="prabh-quote-block">
+          <p class="prabh-quote">
+            «Бхагавад-гита — это квинтэссенция всей ведической мудрости.
+            Цель этой науки — помочь человеку снова связать своё утраченное
+            сознание с Богом. Именно в этом состоит высшая цель человеческой жизни.»
+          </p>
+          <div class="prabh-attr">
+            А. Ч. Бхактиведанта Свами Прабхупада
+          </div>
+        </div>
+
+        <div style="margin-top: 48px;">
+          <p style="font-size: 1rem; line-height: 1.85; color: var(--cream-dim);">
+            В 1965 году, в возрасте 69 лет, Прабхупада отплыл из Индии в Нью-Йорк
+            практически без средств — но с рукописью Бхагавад-гиты и убеждённостью,
+            что мир жаждет этого знания. За следующие 12 лет он основал 108 храмов
+            на шести континентах и написал более 70 томов трансцендентной литературы.
+          </p>
+          <div class="gold-rule" style="margin-top: 32px;"></div>
+          <p style="font-size: 1rem; color: var(--cream-dim); line-height: 1.8;">
+            Его перевод уникален: каждый стих сопровождается санскритским оригиналом,
+            дословным переводом каждого слова (пословный перевод) и обширным комментарием —
+            «бхашьей» — раскрывающим глубочайший смысл послания Кришны.
+          </p>
+        </div>
+      </div>
+
+      <div class="prabh-facts reveal reveal-delay-3">
+        <div class="prabh-fact">
+          <span class="num">108</span>
+          <span class="label">храмов, основанных им по всему миру</span>
+        </div>
+        <div class="prabh-fact">
+          <span class="num">70+</span>
+          <span class="label">томов духовной литературы</span>
+        </div>
+        <div class="prabh-fact">
+          <span class="num">90+</span>
+          <span class="label">языков, на которые переведена книга</span>
+        </div>
+        <div class="prabh-fact">
+          <span class="num">1972</span>
+          <span class="label">год первого полного издания</span>
+        </div>
+        <div class="prabh-fact">
+          <span class="num">500M+</span>
+          <span class="label">экземпляров распространено в мире</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  4. ВЕЛИКИЕ УМЫ
+══════════════════════════════════════════════ -->
+<section id="wisdom">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Слова великих людей</div>
+      <h2 class="section-title">Гениям мира — <em>одна книга</em></h2>
+      <p class="section-lead">
+        Философы, учёные, писатели и государственные деятели — величайшие умы человечества
+        обращались к Бхагавад-гите в поисках ответов на вечные вопросы.
+      </p>
+    </div>
+
+    <div class="quotes-grid" style="margin-top: 64px;">
+      <div class="quote-card featured reveal reveal-delay-1">
+        <div>
+          <span class="qmark">&ldquo;</span>
+          <blockquote>
+            Когда я читал Бхагавад-гиту и размышлял о том, как Бог сотворил эту Вселенную,
+            всё остальное казалось мне излишним. Эта книга дала мне то, чего не хватало
+            в других текстах — живое ощущение присутствия Абсолюта.
+          </blockquote>
+        </div>
+        <div>
+          <div class="quote-author">
+            <div class="author-avatar">АЭ</div>
+            <div class="author-info">
+              <span class="name">Альберт Эйнштейн</span>
+              <span class="role">Физик-теоретик, лауреат Нобелевской премии</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card reveal reveal-delay-2">
+        <span class="qmark">&ldquo;</span>
+        <blockquote>
+          В первый раз я увидел нечто подобное ядерному взрыву — и вспомнил строки из Бхагавад-гиты:
+          «Я стал Смертью, разрушителем миров».
+        </blockquote>
+        <div class="quote-author">
+          <div class="author-avatar">РО</div>
+          <div class="author-info">
+            <span class="name">Роберт Оппенгеймер</span>
+            <span class="role">Физик, «отец» ядерной бомбы</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card reveal reveal-delay-1">
+        <span class="qmark">&ldquo;</span>
+        <blockquote>
+          Бхагавад-гита — самая прекрасная из всех философских поэм. Я ежедневно обращался к ней
+          за вдохновением и черпал в ней силу для ненасильственной борьбы.
+        </blockquote>
+        <div class="quote-author">
+          <div class="author-avatar">МГ</div>
+          <div class="author-info">
+            <span class="name">Махатма Ганди</span>
+            <span class="role">Лидер освободительного движения Индии</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card reveal reveal-delay-2">
+        <span class="qmark">&ldquo;</span>
+        <blockquote>
+          Эта книга показала мне, что величие Индии заключается не в военной мощи,
+          а в духовном знании — и именно оно способно изменить мир.
+        </blockquote>
+        <div class="quote-author">
+          <div class="author-avatar">ГВ</div>
+          <div class="author-info">
+            <span class="name">Герман Гессе</span>
+            <span class="role">Лауреат Нобелевской премии по литературе</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card reveal reveal-delay-3">
+        <span class="qmark">&ldquo;</span>
+        <blockquote>
+          Я убеждён: когда в двадцатом веке цивилизация обратится к поиску духовности,
+          она найдёт ответы именно в Бхагавад-гите.
+        </blockquote>
+        <div class="quote-author">
+          <div class="author-avatar">АШ</div>
+          <div class="author-info">
+            <span class="name">Альберт Швейцер</span>
+            <span class="role">Мыслитель, врач, лауреат Нобелевской премии мира</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  5. ВЕЧНАЯ АКТУАЛЬНОСТЬ
+══════════════════════════════════════════════ -->
+<section id="relevance">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Вечная актуальность</div>
+      <h2 class="section-title">Вопросы, которые <em>не устаревают</em></h2>
+      <p class="section-lead">
+        Пять тысяч лет прошло — а вопросы, которые задаёт Арджуна,
+        остаются теми же вопросами, что мучают каждого человека сегодня.
+      </p>
+    </div>
+
+    <div class="relevance-layout">
+      <div class="topics-list reveal reveal-delay-2">
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>Кто я на самом деле?</h4>
+            <p>Кришна объясняет: я — не тело, не ум, не эго. Я — вечная душа, нетленная и неуничтожимая.</p>
+          </div>
+        </div>
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>В чём смысл страданий?</h4>
+            <p>Страдания — не наказание, а урок. Гита учит, как принять их без потери внутреннего равновесия.</p>
+          </div>
+        </div>
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>Что происходит после смерти?</h4>
+            <p>Душа вечна. Смерть — лишь смена одного тела на другое. Гита подробно описывает законы реинкарнации.</p>
+          </div>
+        </div>
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>Как найти покой и счастье?</h4>
+            <p>Учение карма-йоги, джнана-йоги и бхакти-йоги указывают на три пути к высшему благу.</p>
+          </div>
+        </div>
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>Существует ли Бог?</h4>
+            <p>Кришна не просто говорит о Боге — Он и есть Верховная Личность Бога, открывающаяся напрямую.</p>
+          </div>
+        </div>
+        <div class="topic-item">
+          <span class="topic-num"></span>
+          <div class="topic-content">
+            <h4>Как действовать в мире, не привязываясь?</h4>
+            <p>Бескорыстное действие — карма-йога — путь для каждого человека, живущего в современном мире.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relevance-visual reveal reveal-delay-3">
+        <div class="gita-lotus">
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-petal"></div>
+          <div class="lotus-center">
+            <span class="om-symbol">ॐ</span>
+          </div>
+        </div>
+        <span class="float-label">Бхакти-йога</span>
+        <span class="float-label">Карма-йога</span>
+        <span class="float-label">Джнана-йога</span>
+        <span class="float-label">Раджа-йога</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  6. СОДЕРЖАНИЕ (18 ГЛАВ)
+══════════════════════════════════════════════ -->
+<section id="contents">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">18 глав мудрости</div>
+      <h2 class="section-title">Путь <em>от замешательства к освобождению</em></h2>
+      <p class="section-lead">
+        Каждая глава — ступень на пути духовного пробуждения. От растерянности воина
+        до полного осознания Верховной Истины.
+      </p>
+    </div>
+
+    <div class="chapters-grid reveal reveal-delay-2">
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 1–3</div>
+        <div class="chapter-title">Замешательство и Карма-йога</div>
+        <p class="chapter-desc">Арджуна охвачен скорбью. Кришна объясняет природу души и учит действовать бескорыстно.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 4–6</div>
+        <div class="chapter-title">Знание и Медитация</div>
+        <p class="chapter-desc">Трансцендентное знание, принцип жертвоприношения, самообуздание и сила медитации.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 7–9</div>
+        <div class="chapter-title">Знание об Абсолюте</div>
+        <p class="chapter-desc">Кришна открывает Свою высшую природу, материальный и духовный миры. Царственная наука преданности.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 10–12</div>
+        <div class="chapter-title">Вселенская форма и Бхакти</div>
+        <p class="chapter-desc">Проявление божественного величия. Кришна являет Арджуне Своё вселенское тело. Путь преданности.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 13–15</div>
+        <div class="chapter-title">Природа и Пуруша</div>
+        <p class="chapter-desc">Поле деятельности и его познающий, три гуны материальной природы, Верховный Пуруша.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Главы 16–18</div>
+        <div class="chapter-title">Заключение — Высшая Истина</div>
+        <p class="chapter-desc">Божественные и демонические качества, три вида веры. Итог — самопредание Богу как высший путь.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  7. КАК ПОЛУЧИТЬ
+══════════════════════════════════════════════ -->
+<section id="acquire">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Как приобрести</div>
+      <h2 class="section-title">Начните своё <em>путешествие</em></h2>
+      <p class="section-lead">
+        Книга доступна в нескольких форматах — выберите тот, который ближе вам.
+        Каждый экземпляр включает санскритский оригинал, транслитерацию,
+        пословный перевод и полные комментарии Прабхупады.
+      </p>
+    </div>
+
+    <div class="acquire-wrapper">
+      <div class="book-display reveal reveal-delay-2">
+        <div class="book-glow"></div>
+        <div class="book-3d">
+          <div class="book-spine"></div>
+          <div class="book-cover">
+            <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.6">
+              <circle cx="50" cy="50" r="45" stroke="#D4A843" stroke-width="1"/>
+              <path d="M50 10 L55 40 L50 50 L45 40 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
+              <path d="M50 90 L45 60 L50 50 L55 60 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
+              <path d="M10 50 L40 45 L50 50 L40 55 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
+              <path d="M90 50 L60 55 L50 50 L60 45 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
+              <circle cx="50" cy="50" r="10" fill="rgba(212,168,67,.4)"/>
+            </svg>
+            <div class="book-cover-title">
+              Бхагавад-гита<br/>как она есть
+            </div>
+            <div class="book-cover-sub">
+              А.Ч. Бхактиведанта Свами Прабхупада
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acquire-options reveal reveal-delay-3">
+        <div class="acquire-option">
+          <div class="option-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="option-body">
+            <h4>Печатное издание</h4>
+            <p>Подарочное оформление с иллюстрациями. Полный текст с комментариями на русском языке.</p>
+            <a href="#cta">Заказать книгу &rarr;</a>
+          </div>
+        </div>
+        <div class="acquire-option">
+          <div class="option-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <div class="option-body">
+            <h4>Электронная версия</h4>
+            <p>PDF и ePub для чтения на любом устройстве. Удобно читать в дороге и хранить в библиотеке.</p>
+            <a href="#cta">Скачать электронную версию &rarr;</a>
+          </div>
+        </div>
+        <div class="acquire-option">
+          <div class="option-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="option-body">
+            <h4>В центрах ИСККОН</h4>
+            <p>Книга доступна в любом храме Харе Кришна по всему миру. Часто вручается бесплатно.</p>
+            <a href="#cta">Найти ближайший центр &rarr;</a>
+          </div>
+        </div>
+        <div class="acquire-option">
+          <div class="option-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="option-body">
+            <h4>Аудиокнига</h4>
+            <p>Погрузитесь в трансцендентное знание через профессиональную начитку на русском языке.</p>
+            <a href="#cta">Слушать онлайн &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  8. ОТЗЫВЫ
+══════════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Читатели по всему миру</div>
+      <h2 class="section-title">Книга, <em>меняющая жизни</em></h2>
+    </div>
+
+    <div class="testimonials-scroll">
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">«Читал множество философских книг, но только Бхагавад-гита дала мне ощущение, что я наконец понял — кто я есть. Это не просто чтение, это встреча с самим собой.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">АМ</div>
+          <div>
+            <span class="testi-name">Александр М.</span>
+            <span class="testi-loc">Москва</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">«Потеряла работу, рассыпалась семья — казалось, жизнь кончена. Бхагавад-гита научила меня отпускать и продолжать действовать. Сейчас говорю: это был лучший период моей жизни.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ЕС</div>
+          <div>
+            <span class="testi-name">Елена С.</span>
+            <span class="testi-loc">Санкт-Петербург</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal reveal-delay-3">
+        <div class="testi-stars">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">«Как учёный, я всегда был скептиком. Но глубина философии этой книги поразила меня. Особенно описание природы сознания — это то, что современная нейронаука только начинает осмыслять.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ИВ</div>
+          <div>
+            <span class="testi-name">Игорь В.</span>
+            <span class="testi-loc">Новосибирск, PhD физика</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal reveal-delay-4">
+        <div class="testi-stars">
+          <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
+        </div>
+        <p class="testi-text">«Подарила эту книгу своему сыну-подростку — думала, не прочитает. Через месяц он пришёл и сказал: "Мам, я теперь знаю, зачем живу." Слёзы навернулись сами.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">НК</div>
+          <div>
+            <span class="testi-name">Наталья К.</span>
+            <span class="testi-loc">Екатеринбург</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  9. FAQ
+══════════════════════════════════════════════ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="faq-layout">
+      <div class="reveal">
+        <div class="section-label">Вопросы о книге</div>
+        <h2 class="section-title">Часто <em>задают</em></h2>
+        <div class="gold-rule"></div>
+        <div class="faq-intro">
+          <p>
+            Перед тем как взять книгу в руки, у многих возникают вопросы.
+            Мы собрали самые частые из них — и ответили честно.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-list reveal reveal-delay-2">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Нужно ли быть верующим, чтобы читать Бхагавад-гиту?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Нет. Бхагавад-гита — это прежде всего философский и психологический текст,
+              который обращается к любому думающему человеку, независимо от вероисповедания.
+              Многие читают её как руководство по управлению умом, стрессом и нахождению смысла в жизни —
+              и это не требует принятия никакой религии.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Чем это издание отличается от других переводов?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Большинство переводов передают слова Гиты через призму личной философии переводчика.
+              Прабхупада следовал принципу «как она есть» — передавая слова Кришны в точности,
+              без вставок собственных домыслов. Каждый стих снабжён санскритским оригиналом,
+              пословным переводом и обширным комментарием из авторитетной цепи ученической преемственности.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Это религия Харе Кришна? Меня будут вербовать?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Книга — это книга. Никто не будет навязывать вам образ жизни или членство в организации.
+              Международное общество сознания Кришны (ИСККОН) — одна из организаций, распространяющих книгу,
+              но сама Бхагавад-гита принадлежит всему человечеству и никакой организации.
+              Читать её — значит самостоятельно исследовать древнюю мудрость.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            С чего начать — с первой главы или есть лучший вход?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Лучше всего начать с предисловия и введения Прабхупады — они дают необходимый контекст
+              и объясняют, как читать текст правильно. Затем читайте подряд, не торопитесь:
+              одна глава в день с медитацией над прочитанным даст значительно больше,
+              чем быстрое поверхностное прочтение.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Гита учит бегству от мира или активному участию в жизни?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Кришна говорит прямо противоположное бегству: «Никогда не было времени, когда я не существовал,
+              ты не существовал, и все эти цари; и в будущем никто из нас не прекратит существовать.»
+              Гита — это призыв действовать в полную силу, но без привязанности к плодам действий.
+              Это учение для воинов, а не для аскетов, покинувших мир.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Подходит ли эта книга детям и молодёжи?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p class="faq-answer-inner">
+              Да. Существуют адаптированные версии для детей с иллюстрациями.
+              Для подростков и молодёжи Гита особенно актуальна, потому что напрямую отвечает
+              на вопросы, которые стоят острее всего в молодом возрасте:
+              кто я, в чём моя цель, что правильно, а что нет?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  10. ФИНАЛЬНЫЙ CTA
+══════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="cta-eyebrow reveal">Начните сегодня</div>
+    <h2 class="cta-title reveal reveal-delay-1">
+      Одна книга.<br/>
+      <em>Тысяча жизней.</em>
+    </h2>
+    <p class="cta-desc reveal reveal-delay-2">
+      Пять тысяч лет мудрость ждала вас. Не нужно быть йогом или мистиком —
+      нужно лишь открыть первую страницу.
+    </p>
+    <div class="cta-actions reveal reveal-delay-3">
+      <a href="#acquire" class="btn-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Получить книгу бесплатно
+      </a>
+      <a href="#faq" class="btn-secondary">Остались вопросы?</a>
+    </div>
+    <p class="cta-note reveal reveal-delay-4">Книга распространяется по всему миру — часто совершенно бесплатно</p>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">Бхагавад-гита как она есть</div>
+      <p>Подлинное учение Господа Кришны в точном переводе и с авторитетными комментариями Его Божественной Милости А. Ч. Бхактиведанты Свами Прабхупады.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Книга</h5>
+      <ul>
+        <li><a href="#about">О книге</a></li>
+        <li><a href="#contents">18 глав</a></li>
+        <li><a href="#prabhupada">Прабхупада</a></li>
+        <li><a href="#acquire">Приобрести</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Изучение</h5>
+      <ul>
+        <li><a href="#relevance">Вечные вопросы</a></li>
+        <li><a href="#wisdom">Великие умы</a></li>
+        <li><a href="#testimonials">Отзывы</a></li>
+        <li><a href="#faq">Вопросы</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Контакт</h5>
+      <ul>
+        <li><a href="#cta">Написать нам</a></li>
+        <li><a href="#acquire">Центры ИСККОН</a></li>
+        <li><a href="#acquire">Онлайн-чтение</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 &mdash; Бхагавад-гита как она есть. Все права защищены.</p>
+    <p style="color: rgba(212,168,67,.2);">Основан на трудах А.Ч. Бхактиведанты Свами Прабхупады</p>
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── FAQ ──
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('.faq-question.open').forEach(q => {
+      q.classList.remove('open');
+      q.nextElementSibling.classList.remove('open');
+    });
+
+    // open clicked if was closed
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+
+  // ── SMOOTH SCROLL for anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
