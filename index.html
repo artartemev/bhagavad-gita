@@ -2295,91 +2295,71 @@
 
 <script>
   // ═══════════════════════════════════════
-  // HERO VIDEO — Live Photo "Loop" crossfade
-  // Last 0.9s: fades into clone starting from 0
+  // HERO VIDEO — Live Photo "Loop"
+  // Full video plays once → then only last
+  // LOOP_SEC seconds loop with crossfade
   // ═══════════════════════════════════════
   const vidA = document.getElementById('heroVidA');
   const vidB = document.getElementById('heroVidB');
-  const XFADE = 0.9; // crossfade window (seconds)
-  let xfading = false;
-  let xfadeStart = null;  // performance.now() when crossfade began
-  let xfadeDuration = 0;  // ms — set when we know actual video duration
 
-  // Both videos share the same source; B starts hidden
+  const LOOP_SEC  = 0.9;  // duration of the looping tail (seconds)
+  const XFADE_SEC = 0.35; // crossfade overlap (seconds, < LOOP_SEC)
+  const XFADE_MS  = XFADE_SEC * 1000;
+
+  let loopStart = 0;   // = duration - LOOP_SEC, set after metadata
+  let xfading   = false;
+
   vidA.style.opacity = '1';
   vidB.style.opacity = '0';
 
   vidA.addEventListener('loadedmetadata', () => {
-    xfadeDuration = XFADE * 1000;
+    loopStart = Math.max(0, vidA.duration - LOOP_SEC);
   });
 
-  vidA.addEventListener('timeupdate', () => {
-    if (xfading || !vidA.duration) return;
-    const remaining = vidA.duration - vidA.currentTime;
-    if (remaining <= XFADE) {
-      // Kick off B from the very beginning and crossfade
-      xfading = true;
-      vidB.currentTime = 0;
-      vidB.play();
-      xfadeStart = performance.now();
-      requestAnimationFrame(doXfade);
+  // ── generic crossfade: fade `from` → `to`, then register loop on `to`
+  function crossfade(from, to) {
+    if (xfading) return;
+    xfading = true;
+
+    // `to` starts from the loop segment start
+    to.currentTime = loopStart;
+    to.play();
+
+    const t0 = performance.now();
+
+    function tick(now) {
+      const t    = Math.min((now - t0) / XFADE_MS, 1);
+      const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
+      from.style.opacity = String(1 - ease);
+      to.style.opacity   = String(ease);
+
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        from.pause();
+        from.style.opacity = '0';
+        to.style.opacity   = '1';
+        xfading = false;
+        watchLoop(to, from); // register the next cycle
+      }
     }
-  });
-
-  function doXfade(now) {
-    const elapsed = now - xfadeStart;
-    const t = Math.min(elapsed / (xfadeDuration || XFADE * 1000), 1);
-    // smooth ease-in-out
-    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-    vidA.style.opacity = String(1 - ease);
-    vidB.style.opacity = String(ease);
-
-    if (t < 1) {
-      requestAnimationFrame(doXfade);
-    } else {
-      // Swap roles: B becomes the new A
-      vidA.pause();
-      vidA.style.opacity = '0';
-      vidB.style.opacity = '1';
-
-      // Re-register the same logic on B → A
-      vidB.addEventListener('timeupdate', onBTimeupdate);
-      xfading = false;
-    }
+    requestAnimationFrame(tick);
   }
 
-  function onBTimeupdate() {
-    if (xfading || !vidB.duration) return;
-    const remaining = vidB.duration - vidB.currentTime;
-    if (remaining <= XFADE) {
-      xfading = true;
-      vidA.currentTime = 0;
-      vidA.play();
-      xfadeStart = performance.now();
-      requestAnimationFrame(doXfade2);
+  // ── watch `active` video; when it reaches XFADE_SEC before end → crossfade
+  function watchLoop(active, standby) {
+    function handler() {
+      if (xfading || !active.duration) return;
+      if (active.currentTime >= active.duration - XFADE_SEC) {
+        active.removeEventListener('timeupdate', handler);
+        crossfade(active, standby);
+      }
     }
+    active.addEventListener('timeupdate', handler);
   }
 
-  function doXfade2(now) {
-    const elapsed = now - xfadeStart;
-    const t = Math.min(elapsed / (xfadeDuration || XFADE * 1000), 1);
-    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-    vidB.style.opacity = String(1 - ease);
-    vidA.style.opacity = String(ease);
-
-    if (t < 1) {
-      requestAnimationFrame(doXfade2);
-    } else {
-      vidB.pause();
-      vidB.removeEventListener('timeupdate', onBTimeupdate);
-      vidB.style.opacity = '0';
-      vidA.style.opacity = '1';
-      xfading = false;
-      // A is now playing again from the start, original listener resumes
-    }
-  }
+  // ── first play: vidA runs the full video, then triggers the loop
+  watchLoop(vidA, vidB);
 
   // ═══════════════════════════════════════
   // NAV SCROLL
