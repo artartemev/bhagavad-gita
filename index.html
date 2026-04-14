@@ -620,6 +620,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    perspective: 800px;
+  }
+  .lotus-scene {
+    transform-style: preserve-3d;
+    transition: transform .08s linear;
+    will-change: transform;
   }
   .gita-lotus {
     position: relative;
@@ -634,6 +640,7 @@
     border-radius: 50% 50% 0 0;
     transform-origin: 50% 100%;
     animation: petalPulse 4s ease-in-out infinite;
+    transition: filter .15s;
   }
   .lotus-petal:nth-child(1)  { transform: translate(-50%, -100%) rotate(0deg);   animation-delay: 0s; }
   .lotus-petal:nth-child(2)  { transform: translate(-50%, -100%) rotate(45deg);  animation-delay: .5s; }
@@ -1120,20 +1127,66 @@
   .reveal-delay-4 { transition-delay: .4s; }
   .reveal-delay-5 { transition-delay: .5s; }
 
-  /* ─── PRABHUPADA VIDEO ─── */
-  #prabhupada { position: relative; }
-  .prabh-bg-video {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
+  /* ─── PRABHUPADA ─── */
+  #prabhupada { background: var(--bg3); }
+  .prabh-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .prabh-video-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .prabh-video-wrap video {
+    width: 100%;
+    height: 520px;
     object-fit: cover;
     object-position: center top;
+    display: block;
     mix-blend-mode: multiply;
-    opacity: .85;
-    pointer-events: none;
-    z-index: 0;
   }
-  #prabhupada .section-inner { position: relative; z-index: 1; }
+  .prabh-video-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, transparent 60%, var(--bg3) 100%),
+      linear-gradient(to right, transparent 70%, var(--bg3) 100%);
+    pointer-events: none;
+  }
+  .prabh-stats-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+    background: rgba(212,168,67,.08);
+    border: 1px solid rgba(212,168,67,.08);
+  }
+  .prabh-stat-cell {
+    background: var(--bg3);
+    padding: 28px 20px;
+    text-align: center;
+    transition: background .3s;
+  }
+  .prabh-stat-cell:hover { background: rgba(212,168,67,.05); }
+  .prabh-stat-cell .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .prabh-stat-cell .label {
+    font-size: .8rem;
+    letter-spacing: .06em;
+    color: var(--cream-dim);
+    opacity: .7;
+  }
 
   /* ─── JOURNEY IMAGE ─── */
   .journey-img-wrap {
@@ -1147,7 +1200,8 @@
     max-width: 480px;
     height: auto;
     display: block;
-    filter: drop-shadow(0 30px 80px rgba(212,168,67,.25));
+    mix-blend-mode: multiply;
+    filter: brightness(1.15) contrast(1.05) drop-shadow(0 20px 60px rgba(212,168,67,.3));
   }
   .journey-img-glow {
     position: absolute;
@@ -1375,7 +1429,8 @@
     .hero-right { position: absolute; inset: 0; z-index: -1; }
     .hero-left { background: linear-gradient(to bottom, rgba(5,3,1,.85) 0%, rgba(5,3,1,.7) 100%); }
     .section-inner { padding: 80px 28px; }
-    .about-grid, .prabh-layout, .relevance-layout, .acquire-wrapper, .faq-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    .about-grid, .prabh-top, .relevance-layout, .acquire-wrapper, .faq-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    .prabh-stats-row { grid-template-columns: repeat(3, 1fr); }
     .form-row { grid-template-columns: 1fr; }
     .about-visual { display: none; }
     .quotes-grid { grid-template-columns: 1fr; }
@@ -1524,9 +1579,6 @@
   3. ШРИЛА ПРАБХУПАДА
 ══════════════════════════════════════════════ -->
 <section id="prabhupada">
-  <video class="prabh-bg-video" autoplay muted loop playsinline>
-    <source src="srila.mp4" type="video/mp4" />
-  </video>
   <div class="section-inner">
     <div class="reveal">
       <div class="section-label">Автор перевода и комментариев</div>
@@ -1538,7 +1590,7 @@
       </p>
     </div>
 
-    <div class="prabh-layout">
+    <div class="prabh-top">
       <div class="reveal reveal-delay-2">
         <div class="prabh-quote-block">
           <p class="prabh-quote">
@@ -1550,8 +1602,7 @@
             А. Ч. Бхактиведанта Свами Прабхупада
           </div>
         </div>
-
-        <div style="margin-top: 48px;">
+        <div style="margin-top: 40px;">
           <p style="font-size: 1rem; line-height: 1.85; color: var(--cream-dim);">
             В 1965 году, в возрасте 69 лет, Прабхупада отплыл из Индии в Нью-Йорк
             практически без средств — но с рукописью Бхагавад-гиты и убеждённостью,
@@ -1567,27 +1618,33 @@
         </div>
       </div>
 
-      <div class="prabh-facts reveal reveal-delay-3">
-        <div class="prabh-fact">
-          <span class="num">108</span>
-          <span class="label">храмов, основанных им по всему миру</span>
-        </div>
-        <div class="prabh-fact">
-          <span class="num">70+</span>
-          <span class="label">томов духовной литературы</span>
-        </div>
-        <div class="prabh-fact">
-          <span class="num">90+</span>
-          <span class="label">языков, на которые переведена книга</span>
-        </div>
-        <div class="prabh-fact">
-          <span class="num">1972</span>
-          <span class="label">год первого полного издания</span>
-        </div>
-        <div class="prabh-fact">
-          <span class="num">500M+</span>
-          <span class="label">экземпляров распространено в мире</span>
-        </div>
+      <div class="prabh-video-wrap reveal reveal-delay-3">
+        <video autoplay muted loop playsinline>
+          <source src="srila.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <div class="prabh-stats-row reveal reveal-delay-2">
+      <div class="prabh-stat-cell">
+        <span class="num">108</span>
+        <span class="label">храмов по всему миру</span>
+      </div>
+      <div class="prabh-stat-cell">
+        <span class="num">70+</span>
+        <span class="label">томов литературы</span>
+      </div>
+      <div class="prabh-stat-cell">
+        <span class="num">90+</span>
+        <span class="label">языков перевода</span>
+      </div>
+      <div class="prabh-stat-cell">
+        <span class="num">1972</span>
+        <span class="label">первое полное издание</span>
+      </div>
+      <div class="prabh-stat-cell">
+        <span class="num">500M+</span>
+        <span class="label">экземпляров в мире</span>
       </div>
     </div>
   </div>
@@ -1751,7 +1808,8 @@
         </div>
       </div>
 
-      <div class="relevance-visual reveal reveal-delay-3">
+      <div class="relevance-visual reveal reveal-delay-3" id="lotusWrap">
+        <div class="lotus-scene" id="lotusScene">
         <div class="gita-lotus">
           <div class="lotus-petal"></div>
           <div class="lotus-petal"></div>
@@ -1769,6 +1827,7 @@
         <span class="float-label">Карма-йога</span>
         <span class="float-label">Джнана-йога</span>
         <span class="float-label">Раджа-йога</span>
+        </div><!-- /lotus-scene -->
       </div>
     </div>
   </div>
@@ -2233,33 +2292,104 @@
 </div>
 
 <script>
-  // ── HERO VIDEO LOOP (last 0.5s) ──
+  // ═══════════════════════════════════════
+  // HERO VIDEO — ping-pong last 0.8s
+  // ═══════════════════════════════════════
   const heroVid = document.getElementById('heroVid');
-  heroVid.addEventListener('timeupdate', () => {
-    if (heroVid.duration && heroVid.currentTime >= heroVid.duration - 0.07) {
-      heroVid.currentTime = heroVid.duration - 0.5;
-    }
+  let reversing = false;
+  let prevTs = null;
+
+  heroVid.addEventListener('ended', () => {
+    reversing = true;
+    prevTs = null;
+    requestAnimationFrame(reverseFrame);
   });
 
-  // ── NAV SCROLL ──
+  function reverseFrame(ts) {
+    if (!reversing) return;
+    if (prevTs === null) prevTs = ts;
+    const dt = Math.min((ts - prevTs) / 1000, 0.05);
+    prevTs = ts;
+    const next = heroVid.currentTime - dt;
+    if (next <= heroVid.duration - 0.8) {
+      heroVid.currentTime = heroVid.duration - 0.8;
+      reversing = false;
+      heroVid.play();
+    } else {
+      heroVid.currentTime = next;
+      requestAnimationFrame(reverseFrame);
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // NAV SCROLL
+  // ═══════════════════════════════════════
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
-  // ── SCROLL REVEAL ──
+  // ═══════════════════════════════════════
+  // SCROLL REVEAL
+  // ═══════════════════════════════════════
   const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.classList.add('visible');
-        observer.unobserve(e.target);
+        revealObserver.unobserve(e.target);
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  revealEls.forEach(el => observer.observe(el));
+  revealEls.forEach(el => revealObserver.observe(el));
 
-  // ── FAQ ──
+  // ═══════════════════════════════════════
+  // LOTUS CURSOR PARALLAX
+  // ═══════════════════════════════════════
+  const lotusWrap  = document.getElementById('lotusWrap');
+  const lotusScene = document.getElementById('lotusScene');
+  let lotusRaf = null;
+  let targetRX = 0, targetRY = 0;
+  let currentRX = 0, currentRY = 0;
+
+  lotusWrap.addEventListener('mousemove', (e) => {
+    const rect = lotusWrap.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    targetRY = ((e.clientX - cx) / rect.width)  * 22;
+    targetRX = ((e.clientY - cy) / rect.height) * -14;
+    if (!lotusRaf) lotusRaf = requestAnimationFrame(animateLotus);
+  });
+
+  lotusWrap.addEventListener('mouseleave', () => {
+    targetRX = 0; targetRY = 0;
+    if (!lotusRaf) lotusRaf = requestAnimationFrame(animateLotus);
+  });
+
+  function animateLotus() {
+    currentRX += (targetRX - currentRX) * 0.09;
+    currentRY += (targetRY - currentRY) * 0.09;
+    lotusScene.style.transform = `rotateX(${currentRX}deg) rotateY(${currentRY}deg)`;
+
+    // individual petals get subtle glow boost on side facing cursor
+    const petals = lotusScene.querySelectorAll('.lotus-petal');
+    petals.forEach((p, i) => {
+      const angle = i * 45 * Math.PI / 180;
+      const dot = Math.sin(angle) * targetRY / 22 + Math.cos(angle) * (-targetRX) / 14;
+      const bright = 1 + Math.max(0, dot) * 0.6;
+      p.style.filter = `brightness(${bright.toFixed(2)})`;
+    });
+
+    if (Math.abs(targetRX - currentRX) > 0.01 || Math.abs(targetRY - currentRY) > 0.01) {
+      lotusRaf = requestAnimationFrame(animateLotus);
+    } else {
+      lotusRaf = null;
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // FAQ
+  // ═══════════════════════════════════════
   function toggleFaq(btn) {
     const answer = btn.nextElementSibling;
     const isOpen = btn.classList.contains('open');
@@ -2267,53 +2397,73 @@
       q.classList.remove('open');
       q.nextElementSibling.classList.remove('open');
     });
-    if (!isOpen) {
-      btn.classList.add('open');
-      answer.classList.add('open');
-    }
+    if (!isOpen) { btn.classList.add('open'); answer.classList.add('open'); }
   }
 
-  // ── SMOOTH SCROLL ──
+  // ═══════════════════════════════════════
+  // SMOOTH SCROLL
+  // ═══════════════════════════════════════
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
 
-  // ── ISKCON CENTRES ──
-  const CENTRES = [
-    { name: "Центр ИСККОН Москва", loc: "Москва, Россия", country: "Россия", url: "https://centres.iskcon.org" },
-    { name: "Центр ИСККОН Санкт-Петербург", loc: "Санкт-Петербург, Россия", country: "Россия", url: "https://centres.iskcon.org" },
-    { name: "ИСККОН Новосибирск", loc: "Новосибирск, Россия", country: "Россия", url: "https://centres.iskcon.org" },
-    { name: "Abakan Nama Hatta Center", loc: "Абакан, Хакасия", country: "Россия", url: "https://centres.iskcon.org/centre/abakan-nama-hatta-center/" },
-    { name: "ISKCON Barnaul", loc: "Ул. Матросова 216, Барнаул", country: "Россия", url: "https://centres.iskcon.org/centre/iskcon-barnaul/" },
-    { name: "ISKCON Grodno Belarus", loc: "вул. Дарвіна 5а, Гродно", country: "Беларусь", url: "https://centres.iskcon.org/centre/iskcon-grodno-belarus/" },
-    { name: "ISKCON Iceland", loc: "Hamraborg 22, Кóпавогур", country: "Исландия", url: "https://centres.iskcon.org/centre/iskcon-iceland/" },
-    { name: "ISKCON Center for Vedic Studies", loc: "Calea Piscului 10, Бухарест", country: "Румыния", url: "https://centres.iskcon.org/centre/iskcon-center-for-vedic-studies-bucharest/" },
-    { name: "Tŷ Krishna Cymru", loc: "4 Dock Chambers, Cardiff", country: "Великобритания", url: "https://centres.iskcon.org/centre/ty-krishna-cymru/" },
-    { name: "Hare Krishna Temple of Austin", loc: "1003 Adventure Ln, Cedar Park, TX", country: "США", url: "https://centres.iskcon.org/centre/hare-krishna-temple-of-austin/" },
-    { name: "ISKCON of Virginia", loc: "807 W Clay Street, Richmond, VA", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-virginia/" },
-    { name: "ISKCON Lansing Michigan", loc: "3400 Pine Tree Rd, Lansing, MI", country: "США", url: "https://centres.iskcon.org/centre/iskcon-lansing-michigan/" },
-    { name: "ISKCON of Bergen County", loc: "643 Forest Avenue, Paramus, NJ", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-bergen-county/" },
-    { name: "ISKCON of Harrisburg", loc: "6200 Bedford Street, Harrisburg, PA", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-harrisburg/" },
-    { name: "New Badranath Dham Nevada", loc: "4730 Rain Dance Rd, Silver Springs, NV", country: "США", url: "https://centres.iskcon.org/centre/new-badranath-dham-and-ashram-nevada-usa/" },
-    { name: "ISKCON Bhimavaram", loc: "ASR Nagar, Canal Road, Bhimavaram", country: "Индия", url: "https://centres.iskcon.org/centre/iskcon-bhimavaram/" },
-    { name: "Bhaktivedanta Research Center", loc: "110a, Motilal Nehru Road, Kolkata", country: "Индия", url: "https://centres.iskcon.org/centre/bhaktivedanta-research-center/" },
-    { name: "Hare Krishna Center Meerut", loc: "686 sector 2, Shastri Nagar, Meerut", country: "Индия", url: "https://centres.iskcon.org/centre/shastri-nagar-meerut/" },
-    { name: "Mathura BACE Vidisha", loc: "H. No. 506, Street 3, Vidisha, Madhya Pradesh", country: "Индия", url: "https://centres.iskcon.org/centre/mathura-bace-vidisha/" },
-    { name: "Ayodhya Puri BACE Bhopal", loc: "Bharati Niketan, Habib Ganj, Bhopal", country: "Индия", url: "https://centres.iskcon.org/centre/ayodhya-puri-bace-bhopal/" },
-    { name: "Jagannath Puri BACE Bhopal", loc: "Raisen Road, Piplani, BHEL, Bhopal", country: "Индия", url: "https://centres.iskcon.org/centre/jagannath-puri-bace-bhopal/" },
-    { name: "ISKCON Radhagopinath Karachi", loc: "Gokul Dham Society, Gulistan-e-jouhar, Karachi", country: "Пакистан", url: "https://centres.iskcon.org/centre/iskcon-karachi/" },
-    { name: "Vedic Cultural Centre Dhaka", loc: "Mouchak Market, West Malibagh, Dhaka", country: "Бангладеш", url: "https://centres.iskcon.org/centre/vedic-cultural-and-gita-teaching-centre-dhaka/" },
-  ];
+  // ═══════════════════════════════════════
+  // ISKCON CENTRES — live RSS fetch
+  // ═══════════════════════════════════════
+  const PROXY = 'https://api.allorigins.win/get?url=';
+  const FEED_BASE = 'https://centres.iskcon.org/?feed=job_feed&search_location=&job_categories=&search_keywords=&paged=';
 
-  function buildCentresList(filter) {
+  let allCentres = [];
+  let centresLoaded = false;
+  let selectedCountry = '';
+
+  function parseRssPage(xml) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'text/xml');
+    const items = doc.querySelectorAll('item');
+    return Array.from(items).map(item => {
+      const name = item.querySelector('title')?.textContent?.trim() || '';
+      const url  = item.querySelector('link')?.textContent?.trim() || '#';
+      const locRaw = item.getElementsByTagNameNS('*', 'location')[0]?.textContent?.trim() || '';
+      // Extract country: last comma-separated part
+      const parts = locRaw.split(',').map(s => s.trim()).filter(Boolean);
+      const country = parts.length > 1 ? parts[parts.length - 1] : locRaw;
+      const loc = parts.slice(0, -1).join(', ') || locRaw;
+      return { name, loc, country, url };
+    });
+  }
+
+  async function fetchAllCentres() {
+    allCentres = [];
+    let page = 1;
+    const MAX_PAGES = 40;
+    while (page <= MAX_PAGES) {
+      try {
+        const feedUrl = encodeURIComponent(FEED_BASE + page);
+        const res = await fetch(PROXY + feedUrl);
+        const json = await res.json();
+        const items = parseRssPage(json.contents || '');
+        if (!items.length) break;
+        allCentres.push(...items);
+        page++;
+      } catch(err) {
+        break;
+      }
+    }
+    centresLoaded = true;
+    renderCentresList();
+    buildCountryFilter();
+  }
+
+  function renderCentresList() {
     const list = document.getElementById('centresList');
-    const filtered = filter ? CENTRES.filter(c => c.country === filter) : CENTRES;
+    const sel = document.getElementById('countryFilter');
+    const country = sel ? sel.value : '';
+    const filtered = country ? allCentres.filter(c => c.country === country) : allCentres;
+
     if (!filtered.length) {
       list.innerHTML = '<p class="modal-empty">Центры не найдены</p>';
       return;
@@ -2328,7 +2478,7 @@
         </div>
         <div class="centre-info">
           <span class="centre-name">${c.name}</span>
-          <span class="centre-loc">${c.loc} &mdash; ${c.country}</span>
+          <span class="centre-loc">${c.loc}${c.country ? ' — ' + c.country : ''}</span>
         </div>
         <span class="centre-arrow">&#8599;</span>
       </a>
@@ -2337,25 +2487,28 @@
 
   function buildCountryFilter() {
     const sel = document.getElementById('countryFilter');
-    const countries = [...new Set(CENTRES.map(c => c.country))].sort();
+    const current = sel.value;
+    // keep first "all" option, remove rest
+    while (sel.options.length > 1) sel.remove(1);
+    const countries = [...new Set(allCentres.map(c => c.country).filter(Boolean))].sort();
     countries.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c; opt.textContent = c;
       sel.appendChild(opt);
     });
+    sel.value = current;
   }
 
-  function filterCentres() {
-    buildCentresList(document.getElementById('countryFilter').value);
-  }
+  function filterCentres() { renderCentresList(); }
 
   function openIskconModal() {
-    buildCountryFilter();
-    buildCentresList('');
     document.getElementById('iskconModal').classList.add('open');
     document.body.style.overflow = 'hidden';
-    // prevent re-adding options on subsequent opens
-    buildCountryFilter._done = true;
+    if (!centresLoaded) {
+      document.getElementById('centresList').innerHTML =
+        '<p class="modal-empty" style="animation: none;">Загружаем центры со всего мира…</p>';
+      fetchAllCentres();
+    }
   }
 
   function closeIskconModal() {
@@ -2363,21 +2516,21 @@
     document.body.style.overflow = '';
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeIskconModal();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeIskconModal(); });
 
-  // ── CONTACT FORM ──
+  // ═══════════════════════════════════════
+  // CONTACT FORM → localStorage
+  // ═══════════════════════════════════════
   function submitContactForm(e) {
     e.preventDefault();
     const form = document.getElementById('contactForm');
     const entry = {
       id: Date.now(),
-      name: document.getElementById('cf-name').value,
-      email: document.getElementById('cf-email').value,
-      topic: document.getElementById('cf-topic').value,
+      name:    document.getElementById('cf-name').value,
+      email:   document.getElementById('cf-email').value,
+      topic:   document.getElementById('cf-topic').value,
       message: document.getElementById('cf-msg').value,
-      date: new Date().toISOString()
+      date:    new Date().toISOString()
     };
     const saved = JSON.parse(localStorage.getItem('gita_questions') || '[]');
     saved.push(entry);
