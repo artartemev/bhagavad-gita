@@ -1421,24 +1421,98 @@
   }
 
   @media (max-width: 860px) {
-    nav { padding: 16px 28px; }
+    /* ── NAV ── */
+    nav { padding: 14px 20px; }
     .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-logo { font-size: .95rem; }
+
+    /* ── HERO ── */
     #hero { grid-template-columns: 1fr; min-height: 100dvh; }
-    .hero-left { padding: 100px 28px 60px; }
+    .hero-left {
+      padding: 90px 22px 56px;
+      background: linear-gradient(to bottom, rgba(5,3,1,.88) 0%, rgba(5,3,1,.65) 100%);
+    }
     .hero-right { position: absolute; inset: 0; z-index: -1; }
-    .hero-left { background: linear-gradient(to bottom, rgba(5,3,1,.85) 0%, rgba(5,3,1,.7) 100%); }
-    .section-inner { padding: 80px 28px; }
-    .about-grid, .prabh-top, .relevance-layout, .acquire-wrapper, .faq-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    .hero-title { font-size: clamp(2rem, 9vw, 3rem); }
+    .hero-subtitle { font-size: .95rem; }
+    .hero-desc { font-size: .95rem; max-width: 100%; margin-bottom: 32px; }
+    .hero-actions { gap: 12px; }
+    .btn-primary, .btn-secondary { padding: 13px 24px; font-size: .9rem; }
+    .hero-scroll { display: none; }
+
+    /* ── SECTIONS ── */
+    .section-inner { padding: 64px 22px; }
+    .section-title { font-size: clamp(1.7rem, 6vw, 2.4rem); }
+    .section-lead { font-size: 1rem; }
+
+    /* ── GRIDS → SINGLE COLUMN ── */
+    .about-grid,
+    .prabh-top,
+    .relevance-layout,
+    .acquire-wrapper,
+    .faq-layout,
+    .contact-layout { grid-template-columns: 1fr; gap: 36px; }
+
+    /* ── PRABHUPADA ── */
     .prabh-stats-row { grid-template-columns: repeat(3, 1fr); }
-    .form-row { grid-template-columns: 1fr; }
+    .prabh-stat-cell { padding: 18px 10px; }
+    .prabh-stat-cell .num { font-size: 1.8rem; }
+    .prabh-stat-cell .label { font-size: .7rem; }
+    /* Video: remove blend mode on mobile (iOS Safari limitation) */
+    .prabh-video-wrap video {
+      height: 280px;
+      mix-blend-mode: normal;
+      opacity: .75;
+    }
+
+    /* ── JOURNEY IMAGE ── */
+    .journey-img-wrap img {
+      mix-blend-mode: normal;  /* avoid iOS composite glitches */
+      filter: none;
+      max-width: 100%;
+      border: 1px solid rgba(212,168,67,.15);
+    }
+
+    /* ── LOTUS ── */
+    .relevance-visual { min-height: 340px; }
+    .gita-lotus { width: 240px; height: 240px; }
+    .lotus-petal { width: 82px; height: 142px; }
+    .float-label { font-size: .72rem; }
+
+    /* ── QUOTES / CARDS ── */
     .about-visual { display: none; }
     .quotes-grid { grid-template-columns: 1fr; }
     .quote-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
     .testimonials-scroll { grid-template-columns: 1fr; }
     .chapters-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr; }
-    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-    footer { padding: 48px 28px 32px; }
+    .prabh-quote-block { padding: 36px 24px; }
+    .prabh-quote { font-size: 1.1rem; }
+
+    /* ── FAQ ── */
+    .faq-layout { gap: 24px; }
+    .faq-question { font-size: .95rem; }
+
+    /* ── CONTACT FORM ── */
+    .form-row { grid-template-columns: 1fr; }
+
+    /* ── CTA ── */
+    .cta-inner { padding: 100px 22px; }
+    .cta-title { font-size: clamp(1.9rem, 7vw, 3rem); }
+    .btn-cta { padding: 16px 32px; font-size: .95rem; }
+    .cta-actions { flex-direction: column; align-items: center; }
+
+    /* ── FOOTER ── */
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+    footer { padding: 48px 22px 32px; }
+  }
+
+  @media (max-width: 420px) {
+    .prabh-stats-row { grid-template-columns: repeat(2, 1fr); }
+    .hero-title { font-size: 2rem; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { text-align: center; justify-content: center; }
   }
 </style>
 </head>
@@ -1934,16 +2008,6 @@
         </div>
         <div class="acquire-option">
           <div class="option-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div class="option-body">
-            <h4>В центрах ИСККОН</h4>
-            <p>Книга доступна в любом храме Харе Кришна по всему миру. Часто вручается бесплатно.</p>
-            <a href="#" onclick="openIskconModal(); return false;">Найти ближайший центр &rarr;</a>
-          </div>
-        </div>
-        <div class="acquire-option">
-          <div class="option-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
           </div>
           <div class="option-body">
@@ -2263,7 +2327,6 @@
       <h5>Контакт</h5>
       <ul>
         <li><a href="#cta">Написать нам</a></li>
-        <li><a href="#acquire">Центры ИСККОН</a></li>
         <li><a href="#acquire">Онлайн-чтение</a></li>
       </ul>
     </div>
@@ -2274,21 +2337,6 @@
   </div>
 </footer>
 
-<!-- ─── ISKCON MODAL ─── -->
-<div class="modal-overlay" id="iskconModal" onclick="if(event.target===this)closeIskconModal()">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">Центры ИСККОН по всему миру</div>
-      <button class="modal-close" onclick="closeIskconModal()">&#215;</button>
-    </div>
-    <div class="modal-filters">
-      <select class="modal-select" id="countryFilter" onchange="filterCentres()">
-        <option value="">Все страны</option>
-      </select>
-    </div>
-    <div class="modal-body" id="centresList"></div>
-  </div>
-</div>
 
 <script>
   // ═══════════════════════════════════════
@@ -2397,114 +2445,23 @@
   });
 
   // ═══════════════════════════════════════
-  // ISKCON CENTRES — live RSS fetch
+  // LOTUS — touch tap animation (mobile)
   // ═══════════════════════════════════════
-  // codetabs proxy returns raw content directly (res.text()), no JSON wrapper
-  const PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
-  const FEED_BASE = 'https://centres.iskcon.org/?feed=job_feed&search_location=&job_categories=&search_keywords=&paged=';
+  lotusWrap.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    const rect  = lotusWrap.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    targetRY = ((touch.clientX - cx) / rect.width)  * 22;
+    targetRX = ((touch.clientY - cy) / rect.height) * -14;
+    if (!lotusRaf) lotusRaf = requestAnimationFrame(animateLotus);
 
-  let allCentres = [];
-  let centresLoaded = false;
-  let selectedCountry = '';
-
-  function parseRssPage(xml) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(xml, 'text/xml');
-    const items = doc.querySelectorAll('item');
-    return Array.from(items).map(item => {
-      const name = item.querySelector('title')?.textContent?.trim() || '';
-      const url  = item.querySelector('link')?.textContent?.trim() || '#';
-      const locRaw = item.getElementsByTagNameNS('*', 'location')[0]?.textContent?.trim() || '';
-      // Extract country: last comma-separated part
-      const parts = locRaw.split(',').map(s => s.trim()).filter(Boolean);
-      const country = parts.length > 1 ? parts[parts.length - 1] : locRaw;
-      const loc = parts.slice(0, -1).join(', ') || locRaw;
-      return { name, loc, country, url };
-    });
-  }
-
-  async function fetchAllCentres() {
-    allCentres = [];
-    let page = 1;
-    const MAX_PAGES = 40;
-    while (page <= MAX_PAGES) {
-      try {
-        const feedUrl = encodeURIComponent(FEED_BASE + page);
-        const res = await fetch(PROXY + feedUrl);
-        if (!res.ok) break;
-        const xml = await res.text();
-        const items = parseRssPage(xml);
-        if (!items.length) break;
-        allCentres.push(...items);
-        page++;
-      } catch(err) {
-        break;
-      }
-    }
-    centresLoaded = true;
-    renderCentresList();
-    buildCountryFilter();
-  }
-
-  function renderCentresList() {
-    const list = document.getElementById('centresList');
-    const sel = document.getElementById('countryFilter');
-    const country = sel ? sel.value : '';
-    const filtered = country ? allCentres.filter(c => c.country === country) : allCentres;
-
-    if (!filtered.length) {
-      list.innerHTML = '<p class="modal-empty">Центры не найдены</p>';
-      return;
-    }
-    list.innerHTML = filtered.map(c => `
-      <a class="centre-item" href="${c.url}" target="_blank" rel="noopener">
-        <div class="centre-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </div>
-        <div class="centre-info">
-          <span class="centre-name">${c.name}</span>
-          <span class="centre-loc">${c.loc}${c.country ? ' — ' + c.country : ''}</span>
-        </div>
-        <span class="centre-arrow">&#8599;</span>
-      </a>
-    `).join('');
-  }
-
-  function buildCountryFilter() {
-    const sel = document.getElementById('countryFilter');
-    const current = sel.value;
-    // keep first "all" option, remove rest
-    while (sel.options.length > 1) sel.remove(1);
-    const countries = [...new Set(allCentres.map(c => c.country).filter(Boolean))].sort();
-    countries.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c; opt.textContent = c;
-      sel.appendChild(opt);
-    });
-    sel.value = current;
-  }
-
-  function filterCentres() { renderCentresList(); }
-
-  function openIskconModal() {
-    document.getElementById('iskconModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    if (!centresLoaded) {
-      document.getElementById('centresList').innerHTML =
-        '<p class="modal-empty" style="animation: none;">Загружаем центры со всего мира…</p>';
-      fetchAllCentres();
-    }
-  }
-
-  function closeIskconModal() {
-    document.getElementById('iskconModal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeIskconModal(); });
+    // spring back after short delay
+    setTimeout(() => {
+      targetRX = 0; targetRY = 0;
+      if (!lotusRaf) lotusRaf = requestAnimationFrame(animateLotus);
+    }, 600);
+  }, { passive: true });
 
   // ═══════════════════════════════════════
   // CONTACT FORM → localStorage
