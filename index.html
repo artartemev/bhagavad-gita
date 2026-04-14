@@ -2373,9 +2373,8 @@
     let loopStart = 0;
     let xfading   = false;
 
-    vA.addEventListener('loadedmetadata', () => {
-      loopStart = Math.max(0, vA.duration - LOOP_SEC);
-    });
+    // loop full video — crossfade back to beginning each time
+    loopStart = 0;
 
     function xfade(from, to) {
       if (xfading) return;
