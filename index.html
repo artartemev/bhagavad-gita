@@ -1692,7 +1692,10 @@
       </div>
 
       <div class="prabh-video-wrap reveal reveal-delay-3">
-        <video autoplay muted loop playsinline>
+        <video id="srilaVidA" autoplay muted playsinline>
+          <source src="srila.mp4" type="video/mp4" />
+        </video>
+        <video id="srilaVidB" muted playsinline style="opacity:0;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
           <source src="srila.mp4" type="video/mp4" />
         </video>
       </div>
@@ -2354,6 +2357,60 @@
     heroVid.currentTime = 0;
     heroVid.play();
   });
+
+  // ═══════════════════════════════════════
+  // SRILA VIDEO — Live Photo Loop
+  // full play once → last SRILA_LOOP_SEC loops
+  // ═══════════════════════════════════════
+  (function () {
+    const vA = document.getElementById('srilaVidA');
+    const vB = document.getElementById('srilaVidB');
+    if (!vA || !vB) return;
+
+    const LOOP_SEC  = 0.9;
+    const XFADE_SEC = 0.35;
+    const XFADE_MS  = XFADE_SEC * 1000;
+    let loopStart = 0;
+    let xfading   = false;
+
+    vA.addEventListener('loadedmetadata', () => {
+      loopStart = Math.max(0, vA.duration - LOOP_SEC);
+    });
+
+    function xfade(from, to) {
+      if (xfading) return;
+      xfading = true;
+      to.currentTime = loopStart;
+      to.play();
+      const t0 = performance.now();
+      (function tick(now) {
+        const t    = Math.min((now - t0) / XFADE_MS, 1);
+        const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
+        from.style.opacity = String(1 - ease);
+        to.style.opacity   = String(ease);
+        if (t < 1) { requestAnimationFrame(tick); }
+        else {
+          from.pause(); from.style.opacity = '0';
+          to.style.opacity = '1';
+          xfading = false;
+          watch(to, from);
+        }
+      })(t0);
+    }
+
+    function watch(active, standby) {
+      function h() {
+        if (xfading || !active.duration) return;
+        if (active.currentTime >= active.duration - XFADE_SEC) {
+          active.removeEventListener('timeupdate', h);
+          xfade(active, standby);
+        }
+      }
+      active.addEventListener('timeupdate', h);
+    }
+
+    watch(vA, vB);
+  })();
 
   // ═══════════════════════════════════════
   // NAV SCROLL
