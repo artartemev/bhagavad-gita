@@ -1120,6 +1120,244 @@
   .reveal-delay-4 { transition-delay: .4s; }
   .reveal-delay-5 { transition-delay: .5s; }
 
+  /* ─── PRABHUPADA VIDEO ─── */
+  #prabhupada { position: relative; }
+  .prabh-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    mix-blend-mode: multiply;
+    opacity: .85;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #prabhupada .section-inner { position: relative; z-index: 1; }
+
+  /* ─── JOURNEY IMAGE ─── */
+  .journey-img-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .journey-img-wrap img {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 30px 80px rgba(212,168,67,.25));
+  }
+  .journey-img-glow {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* ─── DOWNLOAD BTNS ─── */
+  .dl-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border: 1px solid rgba(212,168,67,.35);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: .85rem;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: background .25s, border-color .25s;
+  }
+  .dl-btn:hover { background: rgba(212,168,67,.1); border-color: var(--gold); }
+
+  /* ─── ISKCON MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(5,3,1,.88);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--bg3);
+    border: 1px solid rgba(212,168,67,.2);
+    width: 100%;
+    max-width: 820px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(24px);
+    transition: transform .35s;
+    box-shadow: 0 40px 120px rgba(0,0,0,.8), 0 0 0 1px rgba(212,168,67,.06);
+  }
+  .modal-overlay.open .modal-box { transform: none; }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid rgba(212,168,67,.12);
+    flex-shrink: 0;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+  }
+  .modal-close {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(212,168,67,.25);
+    background: none;
+    color: var(--gold);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+    line-height: 1;
+  }
+  .modal-close:hover { background: rgba(212,168,67,.1); }
+  .modal-filters {
+    padding: 20px 36px;
+    border-bottom: 1px solid rgba(212,168,67,.08);
+    flex-shrink: 0;
+  }
+  .modal-select {
+    width: 100%;
+    background: rgba(212,168,67,.05);
+    border: 1px solid rgba(212,168,67,.2);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    padding: 12px 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D4A843' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+  }
+  .modal-select option { background: #1a0e03; }
+  .modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px 0;
+  }
+  .modal-body::-webkit-scrollbar { width: 3px; }
+  .modal-body::-webkit-scrollbar-thumb { background: var(--gold-deep); }
+  .centre-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 36px;
+    border-bottom: 1px solid rgba(212,168,67,.06);
+    transition: background .2s;
+    text-decoration: none;
+  }
+  .centre-item:hover { background: rgba(212,168,67,.05); }
+  .centre-icon {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(212,168,67,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .centre-info .centre-name {
+    font-family: 'Playfair Display', serif;
+    font-size: .95rem;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .centre-info .centre-loc {
+    font-size: .82rem;
+    color: var(--cream-dim);
+    opacity: .65;
+  }
+  .centre-arrow {
+    margin-left: auto;
+    color: rgba(212,168,67,.3);
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 1rem;
+  }
+  .modal-empty {
+    padding: 48px 36px;
+    text-align: center;
+    color: rgba(212,168,67,.4);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+  }
+
+  /* ─── CONTACT FORM ─── */
+  #contact { background: var(--bg2); }
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .contact-intro p { font-size: 1rem; color: var(--cream-dim); line-height: 1.8; margin-top: 20px; }
+  .contact-details { margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+  .contact-detail {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: .9rem; color: var(--cream-dim);
+  }
+  .contact-detail-icon { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label {
+    font-size: .78rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  .form-input, .form-textarea {
+    background: rgba(212,168,67,.04);
+    border: 1px solid rgba(212,168,67,.15);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    padding: 14px 18px;
+    transition: border-color .3s, background .3s;
+    outline: none;
+    resize: none;
+    width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus {
+    border-color: rgba(212,168,67,.45);
+    background: rgba(212,168,67,.07);
+  }
+  .form-textarea { min-height: 130px; }
+  .form-success {
+    display: none;
+    padding: 20px 24px;
+    border: 1px solid rgba(212,168,67,.3);
+    background: rgba(212,168,67,.06);
+    color: var(--gold-light);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 1100px) {
     .quotes-grid { grid-template-columns: 1fr 1fr; }
@@ -1137,7 +1375,8 @@
     .hero-right { position: absolute; inset: 0; z-index: -1; }
     .hero-left { background: linear-gradient(to bottom, rgba(5,3,1,.85) 0%, rgba(5,3,1,.7) 100%); }
     .section-inner { padding: 80px 28px; }
-    .about-grid, .prabh-layout, .relevance-layout, .acquire-wrapper, .faq-layout { grid-template-columns: 1fr; gap: 48px; }
+    .about-grid, .prabh-layout, .relevance-layout, .acquire-wrapper, .faq-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    .form-row { grid-template-columns: 1fr; }
     .about-visual { display: none; }
     .quotes-grid { grid-template-columns: 1fr; }
     .quote-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
@@ -1195,7 +1434,7 @@
   </div>
   <div class="hero-right">
     <div class="hero-glow"></div>
-    <video autoplay muted loop playsinline>
+    <video id="heroVid" autoplay muted playsinline>
       <source src="background_video.mp4" type="video/mp4" />
     </video>
   </div>
@@ -1285,6 +1524,9 @@
   3. ШРИЛА ПРАБХУПАДА
 ══════════════════════════════════════════════ -->
 <section id="prabhupada">
+  <video class="prabh-bg-video" autoplay muted loop playsinline>
+    <source src="srila.mp4" type="video/mp4" />
+  </video>
   <div class="section-inner">
     <div class="reveal">
       <div class="section-label">Автор перевода и комментариев</div>
@@ -1597,27 +1839,9 @@
     </div>
 
     <div class="acquire-wrapper">
-      <div class="book-display reveal reveal-delay-2">
-        <div class="book-glow"></div>
-        <div class="book-3d">
-          <div class="book-spine"></div>
-          <div class="book-cover">
-            <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.6">
-              <circle cx="50" cy="50" r="45" stroke="#D4A843" stroke-width="1"/>
-              <path d="M50 10 L55 40 L50 50 L45 40 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
-              <path d="M50 90 L45 60 L50 50 L55 60 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
-              <path d="M10 50 L40 45 L50 50 L40 55 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
-              <path d="M90 50 L60 55 L50 50 L60 45 Z" fill="rgba(212,168,67,.5)" stroke="#D4A843" stroke-width="0.8"/>
-              <circle cx="50" cy="50" r="10" fill="rgba(212,168,67,.4)"/>
-            </svg>
-            <div class="book-cover-title">
-              Бхагавад-гита<br/>как она есть
-            </div>
-            <div class="book-cover-sub">
-              А.Ч. Бхактиведанта Свами Прабхупада
-            </div>
-          </div>
-        </div>
+      <div class="journey-img-wrap reveal reveal-delay-2">
+        <div class="journey-img-glow"></div>
+        <img src="start_your_journey.png" alt="Начните своё путешествие" />
       </div>
 
       <div class="acquire-options reveal reveal-delay-3">
@@ -1628,7 +1852,7 @@
           <div class="option-body">
             <h4>Печатное издание</h4>
             <p>Подарочное оформление с иллюстрациями. Полный текст с комментариями на русском языке.</p>
-            <a href="#cta">Заказать книгу &rarr;</a>
+            <a href="https://ozon.ru/t/uev6rno" target="_blank" rel="noopener">Заказать на Ozon &rarr;</a>
           </div>
         </div>
         <div class="acquire-option">
@@ -1637,8 +1861,17 @@
           </div>
           <div class="option-body">
             <h4>Электронная версия</h4>
-            <p>PDF и ePub для чтения на любом устройстве. Удобно читать в дороге и хранить в библиотеке.</p>
-            <a href="#cta">Скачать электронную версию &rarr;</a>
+            <p>Скачайте в удобном формате и читайте на любом устройстве.</p>
+            <div class="dl-btns">
+              <a class="dl-btn" href="Bhagavad_Gita.epub" download>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                ePub
+              </a>
+              <a class="dl-btn" href="Bhagavad_gita.fb2" download>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                FB2
+              </a>
+            </div>
           </div>
         </div>
         <div class="acquire-option">
@@ -1648,17 +1881,17 @@
           <div class="option-body">
             <h4>В центрах ИСККОН</h4>
             <p>Книга доступна в любом храме Харе Кришна по всему миру. Часто вручается бесплатно.</p>
-            <a href="#cta">Найти ближайший центр &rarr;</a>
+            <a href="#" onclick="openIskconModal(); return false;">Найти ближайший центр &rarr;</a>
           </div>
         </div>
         <div class="acquire-option">
           <div class="option-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
           </div>
           <div class="option-body">
             <h4>Аудиокнига</h4>
-            <p>Погрузитесь в трансцендентное знание через профессиональную начитку на русском языке.</p>
-            <a href="#cta">Слушать онлайн &rarr;</a>
+            <p>Профессиональная начитка на русском языке — бесплатно на YouTube.</p>
+            <a href="https://www.youtube.com/watch?v=BCQnVehe8HQ&list=PLwH5j1qMWUtF9g7-TKaCgFS3ccvh_powX" target="_blank" rel="noopener">Слушать на YouTube &rarr;</a>
           </div>
         </div>
       </div>
@@ -1850,7 +2083,76 @@
 </section>
 
 <!-- ══════════════════════════════════════════════
-  10. ФИНАЛЬНЫЙ CTA
+  10. ЗАДАТЬ ВОПРОС
+══════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-layout">
+      <div class="reveal">
+        <div class="section-label">Напишите нам</div>
+        <h2 class="section-title">Остались <em>вопросы?</em></h2>
+        <div class="gold-rule"></div>
+        <div class="contact-intro">
+          <p>Мы рады ответить на любые вопросы о книге, о её содержании, о том как её получить или изучать. Напишите нам — обычно отвечаем в течение дня.</p>
+        </div>
+        <div class="contact-details">
+          <div class="contact-detail">
+            <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Книги распространяются в храмах ИСККОН по всему миру</span>
+          </div>
+          <div class="contact-detail">
+            <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span>Ответим в течение 24 часов</span>
+          </div>
+          <div class="contact-detail">
+            <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Ваши данные конфиденциальны и не передаются третьим лицам</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="cf-name">Имя</label>
+              <input class="form-input" id="cf-name" type="text" placeholder="Ваше имя" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-email">E-mail</label>
+              <input class="form-input" id="cf-email" type="email" placeholder="your@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cf-topic">Тема</label>
+            <select class="form-input" id="cf-topic" style="appearance:none; cursor:pointer;">
+              <option value="">Выберите тему...</option>
+              <option>Как получить книгу</option>
+              <option>Вопрос о содержании Гиты</option>
+              <option>Центры ИСККОН</option>
+              <option>Электронная версия</option>
+              <option>Другое</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cf-msg">Ваш вопрос</label>
+            <textarea class="form-textarea" id="cf-msg" placeholder="Напишите ваш вопрос..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="align-self:flex-start; cursor:pointer; border:none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Отправить вопрос
+          </button>
+          <div class="form-success" id="formSuccess">
+            Харе Кришна! Ваш вопрос получен. Мы ответим в ближайшее время.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+  11. ФИНАЛЬНЫЙ CTA
 ══════════════════════════════════════════════ -->
 <section id="cta">
   <div class="cta-inner">
@@ -1868,7 +2170,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Получить книгу бесплатно
       </a>
-      <a href="#faq" class="btn-secondary">Остались вопросы?</a>
+      <a href="#contact" class="btn-secondary">Остались вопросы?</a>
     </div>
     <p class="cta-note reveal reveal-delay-4">Книга распространяется по всему миру — часто совершенно бесплатно</p>
   </div>
@@ -1914,7 +2216,31 @@
   </div>
 </footer>
 
+<!-- ─── ISKCON MODAL ─── -->
+<div class="modal-overlay" id="iskconModal" onclick="if(event.target===this)closeIskconModal()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Центры ИСККОН по всему миру</div>
+      <button class="modal-close" onclick="closeIskconModal()">&#215;</button>
+    </div>
+    <div class="modal-filters">
+      <select class="modal-select" id="countryFilter" onchange="filterCentres()">
+        <option value="">Все страны</option>
+      </select>
+    </div>
+    <div class="modal-body" id="centresList"></div>
+  </div>
+</div>
+
 <script>
+  // ── HERO VIDEO LOOP (last 0.5s) ──
+  const heroVid = document.getElementById('heroVid');
+  heroVid.addEventListener('timeupdate', () => {
+    if (heroVid.duration && heroVid.currentTime >= heroVid.duration - 0.07) {
+      heroVid.currentTime = heroVid.duration - 0.5;
+    }
+  });
+
   // ── NAV SCROLL ──
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
@@ -1937,21 +2263,17 @@
   function toggleFaq(btn) {
     const answer = btn.nextElementSibling;
     const isOpen = btn.classList.contains('open');
-
-    // close all
     document.querySelectorAll('.faq-question.open').forEach(q => {
       q.classList.remove('open');
       q.nextElementSibling.classList.remove('open');
     });
-
-    // open clicked if was closed
     if (!isOpen) {
       btn.classList.add('open');
       answer.classList.add('open');
     }
   }
 
-  // ── SMOOTH SCROLL for anchor links ──
+  // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
@@ -1961,6 +2283,115 @@
       }
     });
   });
+
+  // ── ISKCON CENTRES ──
+  const CENTRES = [
+    { name: "Центр ИСККОН Москва", loc: "Москва, Россия", country: "Россия", url: "https://centres.iskcon.org" },
+    { name: "Центр ИСККОН Санкт-Петербург", loc: "Санкт-Петербург, Россия", country: "Россия", url: "https://centres.iskcon.org" },
+    { name: "ИСККОН Новосибирск", loc: "Новосибирск, Россия", country: "Россия", url: "https://centres.iskcon.org" },
+    { name: "Abakan Nama Hatta Center", loc: "Абакан, Хакасия", country: "Россия", url: "https://centres.iskcon.org/centre/abakan-nama-hatta-center/" },
+    { name: "ISKCON Barnaul", loc: "Ул. Матросова 216, Барнаул", country: "Россия", url: "https://centres.iskcon.org/centre/iskcon-barnaul/" },
+    { name: "ISKCON Grodno Belarus", loc: "вул. Дарвіна 5а, Гродно", country: "Беларусь", url: "https://centres.iskcon.org/centre/iskcon-grodno-belarus/" },
+    { name: "ISKCON Iceland", loc: "Hamraborg 22, Кóпавогур", country: "Исландия", url: "https://centres.iskcon.org/centre/iskcon-iceland/" },
+    { name: "ISKCON Center for Vedic Studies", loc: "Calea Piscului 10, Бухарест", country: "Румыния", url: "https://centres.iskcon.org/centre/iskcon-center-for-vedic-studies-bucharest/" },
+    { name: "Tŷ Krishna Cymru", loc: "4 Dock Chambers, Cardiff", country: "Великобритания", url: "https://centres.iskcon.org/centre/ty-krishna-cymru/" },
+    { name: "Hare Krishna Temple of Austin", loc: "1003 Adventure Ln, Cedar Park, TX", country: "США", url: "https://centres.iskcon.org/centre/hare-krishna-temple-of-austin/" },
+    { name: "ISKCON of Virginia", loc: "807 W Clay Street, Richmond, VA", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-virginia/" },
+    { name: "ISKCON Lansing Michigan", loc: "3400 Pine Tree Rd, Lansing, MI", country: "США", url: "https://centres.iskcon.org/centre/iskcon-lansing-michigan/" },
+    { name: "ISKCON of Bergen County", loc: "643 Forest Avenue, Paramus, NJ", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-bergen-county/" },
+    { name: "ISKCON of Harrisburg", loc: "6200 Bedford Street, Harrisburg, PA", country: "США", url: "https://centres.iskcon.org/centre/iskcon-of-harrisburg/" },
+    { name: "New Badranath Dham Nevada", loc: "4730 Rain Dance Rd, Silver Springs, NV", country: "США", url: "https://centres.iskcon.org/centre/new-badranath-dham-and-ashram-nevada-usa/" },
+    { name: "ISKCON Bhimavaram", loc: "ASR Nagar, Canal Road, Bhimavaram", country: "Индия", url: "https://centres.iskcon.org/centre/iskcon-bhimavaram/" },
+    { name: "Bhaktivedanta Research Center", loc: "110a, Motilal Nehru Road, Kolkata", country: "Индия", url: "https://centres.iskcon.org/centre/bhaktivedanta-research-center/" },
+    { name: "Hare Krishna Center Meerut", loc: "686 sector 2, Shastri Nagar, Meerut", country: "Индия", url: "https://centres.iskcon.org/centre/shastri-nagar-meerut/" },
+    { name: "Mathura BACE Vidisha", loc: "H. No. 506, Street 3, Vidisha, Madhya Pradesh", country: "Индия", url: "https://centres.iskcon.org/centre/mathura-bace-vidisha/" },
+    { name: "Ayodhya Puri BACE Bhopal", loc: "Bharati Niketan, Habib Ganj, Bhopal", country: "Индия", url: "https://centres.iskcon.org/centre/ayodhya-puri-bace-bhopal/" },
+    { name: "Jagannath Puri BACE Bhopal", loc: "Raisen Road, Piplani, BHEL, Bhopal", country: "Индия", url: "https://centres.iskcon.org/centre/jagannath-puri-bace-bhopal/" },
+    { name: "ISKCON Radhagopinath Karachi", loc: "Gokul Dham Society, Gulistan-e-jouhar, Karachi", country: "Пакистан", url: "https://centres.iskcon.org/centre/iskcon-karachi/" },
+    { name: "Vedic Cultural Centre Dhaka", loc: "Mouchak Market, West Malibagh, Dhaka", country: "Бангладеш", url: "https://centres.iskcon.org/centre/vedic-cultural-and-gita-teaching-centre-dhaka/" },
+  ];
+
+  function buildCentresList(filter) {
+    const list = document.getElementById('centresList');
+    const filtered = filter ? CENTRES.filter(c => c.country === filter) : CENTRES;
+    if (!filtered.length) {
+      list.innerHTML = '<p class="modal-empty">Центры не найдены</p>';
+      return;
+    }
+    list.innerHTML = filtered.map(c => `
+      <a class="centre-item" href="${c.url}" target="_blank" rel="noopener">
+        <div class="centre-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="centre-info">
+          <span class="centre-name">${c.name}</span>
+          <span class="centre-loc">${c.loc} &mdash; ${c.country}</span>
+        </div>
+        <span class="centre-arrow">&#8599;</span>
+      </a>
+    `).join('');
+  }
+
+  function buildCountryFilter() {
+    const sel = document.getElementById('countryFilter');
+    const countries = [...new Set(CENTRES.map(c => c.country))].sort();
+    countries.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      sel.appendChild(opt);
+    });
+  }
+
+  function filterCentres() {
+    buildCentresList(document.getElementById('countryFilter').value);
+  }
+
+  function openIskconModal() {
+    buildCountryFilter();
+    buildCentresList('');
+    document.getElementById('iskconModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // prevent re-adding options on subsequent opens
+    buildCountryFilter._done = true;
+  }
+
+  function closeIskconModal() {
+    document.getElementById('iskconModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeIskconModal();
+  });
+
+  // ── CONTACT FORM ──
+  function submitContactForm(e) {
+    e.preventDefault();
+    const form = document.getElementById('contactForm');
+    const entry = {
+      id: Date.now(),
+      name: document.getElementById('cf-name').value,
+      email: document.getElementById('cf-email').value,
+      topic: document.getElementById('cf-topic').value,
+      message: document.getElementById('cf-msg').value,
+      date: new Date().toISOString()
+    };
+    const saved = JSON.parse(localStorage.getItem('gita_questions') || '[]');
+    saved.push(entry);
+    localStorage.setItem('gita_questions', JSON.stringify(saved));
+
+    form.querySelectorAll('input, select, textarea, button[type=submit]').forEach(el => el.disabled = true);
+    const success = document.getElementById('formSuccess');
+    success.style.display = 'block';
+    setTimeout(() => {
+      success.style.display = 'none';
+      form.reset();
+      form.querySelectorAll('input, select, textarea, button[type=submit]').forEach(el => el.disabled = false);
+    }, 5000);
+  }
 </script>
 </body>
 </html>
